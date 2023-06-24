@@ -1,0 +1,146 @@
+/*--------------------------
+    Accordion Styles  
+---------------------------*/
+.rn-accordion-style {
+  .card {
+    background: var(--color-lessdark);
+    border: 0;
+    border-radius: var(--radius) !important;
+
+    .card-header {
+      background-color: transparent;
+      border-bottom: 0 none;
+      box-shadow: none;
+      padding: 20px 30px;
+      margin-bottom: 0;
+
+      button {
+        color: var(--color-heading);
+        font-size: 18px;
+        line-height: 27px;
+        outline: none;
+        text-decoration: none;
+        box-shadow: none;
+        width: 100%;
+        text-align: left;
+        padding: 0;
+        background: transparent;
+        position: relative;
+
+        &::after {
+          display: none;
+        }
+
+        .collapse-icon {
+          width: 16px;
+          height: 16px;
+          margin-left: auto;
+          position: relative;
+
+          &:before,
+          &:after {
+            content: '';
+            position: absolute;
+            background-color: var(--color-heading);
+            transition: transform 0.25s ease-out;
+          }
+
+          &:before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+
+          &:after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+
+        &[aria-expanded="true"] {
+          .collapse-icon {
+            &:before {
+              transform: rotate(90deg);
+            }
+          }
+        }
+      }
+    }
+
+    .card-body {
+      padding-top: 0;
+      font-size: var(--font-size-b2);
+      line-height: var(--line-height-b2);
+      font-weight: var(--p-regular);
+      color: var(--color-body);
+      padding: 30px 20px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    & + .card {
+      margin-top: 20px;
+    }
+  }
+
+  &.rn-accordion-02 {
+    .card {
+      background: transparent;
+      border-radius: 0 !important;
+
+      .card-header {
+        border-bottom: 2px solid var(--color-border);
+        padding: 0px 20px 10px 0;
+
+        .accordion-button {
+          &::after {
+            display: none;
+          }
+        }
+
+      }
+
+      .card-body {
+        padding: 15px 20px 10px 0;
+        border-top: 0;
+      }
+    }
+  }
+
+  &.rn-accordion-03 {
+    .card {
+      background: transparent;
+      border-radius: 0 !important;
+
+      .card-header {
+        border: 2px solid var(--color-border);
+        padding: 15px 20px;
+        border-radius: var(--radius) !important;
+      }
+
+      .card-body {
+        padding: 15px 20px 10px 0;
+        border: 0;
+      }
+    }
+  }
+
+  &.rn-accordion-04 {
+    .card {
+      border: 2px solid var(--color-border);
+      background: transparent;
+      border-radius: var(--radius) !important;
+
+      .card-header {
+        padding: 15px 20px;
+        border-radius: var(--radius) !important;
+      }
+
+      .card-body {
+        border-top: 2px solid var(--color-border);
+      }
+    }
+  }
+}
