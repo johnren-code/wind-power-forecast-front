@@ -11,7 +11,7 @@
             <div class="user_Overview_nums allnum ">
                 <dv-digital-flop :config="config" style="width:100%;height:100%;" />
             </div>
-            <p>总设备数</p>
+            <p>总风机数</p>
         </li>
         <li class="user_Overview-item" style="color: #07f7a8">
             <div class="user_Overview_nums online">
@@ -22,7 +22,6 @@
         <li class="user_Overview-item" style="color: #e3b337">
             <div class="user_Overview_nums offline">
                 <dv-digital-flop :config="offlineconfig" style="width:100%;height:100%;" />
-
             </div>
             <p>掉线数</p>
         </li>

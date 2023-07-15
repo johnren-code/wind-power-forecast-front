@@ -7,7 +7,7 @@
       <div class="login_form_left">
         <img src="../../assets/images/logo/logo.png" alt="Doob Vue" style="display: inline-block;"/>
         <p class="description" style="color: #E4E6EA">
-        <h5><br/>&nbsp可视化和可编辑的分割<br/><br/></h5>
+        <h5><br/>&nbsp风电功率智能预测<br/><br/></h5>
         </p>
         <img src="../../assets/images/modal/login.png" alt="Doob Vue" style="display: inline-block;"/>
       </div>
@@ -258,19 +258,26 @@ export default {
           urlInfo = 'login'
           loginInfo = JSON.stringify({name: this.loginData.username, password: this.loginData.password})
         }
-        axios.post('/api/login', {
-          username: this.loginData.username,
+        axios.post('/api/user/login', {
+          account: this.loginData.username,
           password: this.loginData.password
         }).then(res => {
-          this.fullscreenLoading = false
-          if (res.data.code === 400) {
-            this.$message.error(res.data.message)
-          } else {
-            this.$message.success('登录成功')
+          console.log(res)
+          if(!res.status){
+            this.$message.error(res.message)
+          }else {
+            this.$message.success('登陆成功')
             this.hide()
-            this.$ls.set('userInfo', res.data.result)
-            eventBus.$emit('userLogin', true)
           }
+          // this.fullscreenLoading = false
+          // if (res.data.code === 400) {
+          //   this.$message.error(res.data.message)
+          // } else {
+          //   this.$message.success('登录成功')
+          //   this.hide()
+          //   this.$ls.set('userInfo', res.data.result)
+          //   eventBus.$emit('userLogin', true)
+          // }
         }).catch(error => {
           this.fullscreenLoading = false
           this.$message.error('登录错误，请稍后再试')

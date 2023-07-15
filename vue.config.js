@@ -10,6 +10,26 @@ function resolve(dir) {
 }
 
 module.exports = {
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8888',
+        pathRewrite: {
+          '^/api': '/api'
+        },
+        changeOrigin: true,
+        ws: true,
+      },
+      '/flask': {
+        target: 'http://localhost:5000',
+        pathRewrite: {
+          '^/flask': ''
+        },
+        changeOrigin: true,
+        ws: true,
+      },
+    }
+  },
   publicPath: './',
   outputDir: process.env.VUE_APP_outputDir || 'dist',
   assetsDir: 'static',
@@ -113,10 +133,6 @@ module.exports = {
   },
   // 是否为 Babel 或 TypeScript 使用 thread-loader。该选项在系统的 CPU 有多于一个内核时自动启用，仅作用于生产构建。
   parallel: require('os').cpus().length > 1,
-
-  devServer: {
-    // 配置多个代理
-  },
   pluginOptions: {
   }
 }

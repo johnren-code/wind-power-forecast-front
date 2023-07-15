@@ -21,11 +21,15 @@
             </div>
             <div class="timers">
               {{ dateYear }} {{ dateWeek }} {{ dateDay }}
-              <i
-                  class="blq-icon-shezhi02"
-                  style="margin-left: 10px"
-                  @click="showSetting"
-              ></i>
+
+              <el-select v-model="value" placeholder="请选择风场" style="width: 150px;margin-left: 20px">
+                <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+              </el-select>
             </div>
           </div>
           <!-- 头部 e-->
@@ -36,7 +40,7 @@
                 <!-- <div class="item">实时监测</div> -->
 
               </div>
-              <ItemWrap class="contetn_left-top contetn_lr-item" title="设备总览">
+              <ItemWrap class="contetn_left-top contetn_lr-item" title="风机总览">
                 <LeftTop/>
 
               </ItemWrap>
@@ -119,6 +123,23 @@ export default {
       dateYear: null,
       dateWeek: null,
       weekday: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+      options: [{
+        value: '选项1',
+        label: '风场1'
+      }, {
+        value: '选项2',
+        label: '风场2'
+      }, {
+        value: '选项3',
+        label: '风场3'
+      }, {
+        value: '选项4',
+        label: '风场4'
+      }, {
+        value: '选项5',
+        label: '风场5'
+      }],
+      value: ''
     };
   },
   filters: {
@@ -157,6 +178,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "./home.scss";
+@import  '../assets/css/public.scss';
+@import "../assets/css/index.scss";
+@import "../assets/css/modules/reset.scss";
+@import '../assets/css/theme/index.css';
+@import '../assets/iconfont/iconfont.css';
 // 内容
 .contents {
   .contetn_left,

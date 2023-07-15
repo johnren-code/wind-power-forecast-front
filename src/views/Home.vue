@@ -10,18 +10,16 @@
                 <img src="../assets/images/demo/badge-vue-js.png" alt="Doob Vue"/>
               </div>
               <h1 class="title display-two" data-aos="fade-up" data-aos-delay="100">
-                Next-gen all-in-one <br/>
-                <span class="theme-gradient">Business</span> &
-                <span class="theme-gradient">Consulting</span>
+                风电功率预测平台 <br/>
+                <span class="theme-gradient">时序预测</span> &
+                <span class="theme-gradient">风电功率预测</span>
                 <br/>
-                Vue.js Template.
               </h1>
               <p class="description" data-aos="fade-up" data-aos-delay="150">
-                We help our clients succeed by creating brand identities, digital
-                experiences, and print materials.
+                功率预测 / 数据可视化 / 滚动预测
               </p>
               <div class="button-group" data-aos="fade-up" data-aos-delay="200">
-                <a class="btn-default btn-large round btn-icon" href="#demo">View Demo
+                <a class="btn-default btn-large round btn-icon" href="#demo">查看详情
                   <Icon name="arrow-down"/>
                 </a>
               </div>

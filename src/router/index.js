@@ -57,6 +57,7 @@ import WebAgency from '../views/home-pages/WebAgency'
 import DigitalScreen from "../views/DigitalScreen";
 import Home from "../views/Home";
 import PowerPred from "@/views/PowerPred";
+import PersonalPage from "@/views/PersonalPage";
 
 Vue.use(VueRouter)
 
@@ -73,6 +74,14 @@ const routes = [
         path: '/home',
         name: 'Home',
         component: Home,
+        meta: {
+            title: 'Doob || Doob Business and Consulting Bootstrap5 Template',
+        },
+    },
+    {
+        path: '/personal',
+        name: 'PersonalPage',
+        component: PersonalPage,
         meta: {
             title: 'Doob || Doob Business and Consulting Bootstrap5 Template',
         },

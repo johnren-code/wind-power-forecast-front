@@ -23,12 +23,11 @@ import Reacquire from './components/reacquire/reacquire.vue'
 import Messages from './components/message/message'
 import "vue-easytable/libs/theme-default/index.css";
 import ElementUI from 'element-ui'
-import  '@/assets/css/public.scss'
-import "@/assets/css/index.scss"
 import * as filters from '@/directives/filters'
 import * as echarts from 'echarts'
 import 'vue-js-modal/dist/styles.css'
 import IdentifyCode from './components/login/IdentifyCode'
+import VModal from 'vue-js-modal/dist/index.nocss.js'
 import Storage from 'vue-ls'
 const storageOptions = {
   namespace: 'vue_',
@@ -45,6 +44,7 @@ Vue.component("Reacquire",Reacquire)
 Vue.component('s-identify', IdentifyCode)
 Vue.prototype.$Message =  Messages
 // element组件
+Vue.use(VModal)
 Vue.use(Radio);
 Vue.use(Button);
 Vue.use(RadioGroup)
