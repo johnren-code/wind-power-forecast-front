@@ -8,13 +8,13 @@
       <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                :collapse="isCollapse" background-color="transparent" text-color="#EBEEF5" router
                :collapse-transition="false" style="border: none">
-        <el-menu-item index="/history/new">
-          <el-button icon="el-icon-plus" type="text">新建项目</el-button>
+        <el-menu-item index="/pred/new">
+          <el-button icon="el-icon-plus" type="text">新建风电场</el-button>
         </el-menu-item>
-        <el-menu-item :index="'/history/' + item.id.toString()" v-for="item in tableData"
+        <el-menu-item :index="'/pred/' + item.id.toString()" v-for="item in tableData"
                       @click="savePath(item.id)">
-          <i class="el-icon-user-solid"></i>
-          <span slot="title">病人{{ item.name }}</span>
+          <i class="iconfont icon-fengji"></i>
+          <span slot="title" style="margin-left: 10px">风电场{{ item.id }}</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       isCollapse: false,
-      tableData: [],
+      tableData: [{id: 11}, {id: 12}, {id: 13}, {id: 14}, {id: 15}, {id: 16}, {id: 17}, {id: 18}, {id: 19}, {id: 20}],
       defaultActive: sessionStorage.getItem('path')
     };
   },
@@ -41,34 +41,18 @@ export default {
       console.log(key, keyPath);
     },
     savePath(path) {
-      sessionStorage.setItem('path', `/history/${path}`)
+      sessionStorage.setItem('path', `/powerPred/${path}`)
     }
   },
-  watch: {
-    '$route.params': function (to, from) {
-      axios.post('/api/proj/my', { permission: 'all' }).then(res => {
-        // this.form = res.data.result
-        this.tableData = res.data.result
-        console.log(res.data);
-      }, err => {
-        console.log(err);
-      })
-    },
-  },
   mounted() {
-    axios.post('/api/proj/my', { permission: 'all' }).then(res => {
-      // this.form = res.data.result
-      this.tableData = res.data.result
-      console.log(res.data);
-    }, err => {
-      console.log(err);
-    })
     this.defaultActive = sessionStorage.getItem('path')
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../assets/iconfont-expand/iconfont.css";
+
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 100%;
   min-height: 400px;
