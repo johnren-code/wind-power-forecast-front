@@ -10,8 +10,9 @@
                                 <div class="content text-left">
                                     <Logo/>
                                     <p class="subtitle">
-                                        If you want to create a corporate template you can purchase now our doob
-                                        template.
+                                      想要试试我们平台强大的功能吗？
+                                      <br>
+                                      可以马上体验一下
                                     </p>
                                 </div>
                             </div>
@@ -19,7 +20,7 @@
                         <div class="col-lg-4 col-md-4">
                             <div class="call-to-btn text-start mt_sm--20 text-lg-end" data-aos="fade-up">
                                 <Button
-                                    title="Purchase Doob"
+                                    title="立即体验"
                                     icon="arrow-right"
                                     url="#"
                                 />
@@ -33,20 +34,16 @@
                     <div class="row">
                         <div class="col-lg-2 col-md-6 col-sm-6 col-12">
                             <div class="rn-footer-widget">
-                                <h4 class="title">Services</h4>
+                                <h4 class="title">时序预测</h4>
                                 <div class="inner">
                                     <ul class="footer-link link-hover">
                                         <li>
-                                            <router-link to="/about">About</router-link>
+                                          <a href="https://aistudio.baidu.com/aistudio/projectdetail/5866171?channelType=0&channel=0"
+                                             target="_blank">实现参考</a>
                                         </li>
                                         <li>
-                                            <router-link to="/portfolio">Portfolio</router-link>
-                                        </li>
-                                        <li>
-                                            <router-link to="/contact">Contact</router-link>
-                                        </li>
-                                        <li>
-                                            <router-link to="/service">Service</router-link>
+                                          <a href="https://aistudio.baidu.com/aistudio/datasetdetail/205286"
+                                             target="_blank">数据集</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -55,20 +52,12 @@
                         <div class="col-lg-2 col-md-6 col-sm-6 col-12">
                             <div class="rn-footer-widget">
                                 <div class="widget-menu-top">
-                                    <h4 class="title">Solutions</h4>
+                                    <h4 class="title">异常检测</h4>
                                     <div class="inner">
                                         <ul class="footer-link link-hover">
                                             <li>
-                                                <router-link to="/brand">Brand</router-link>
-                                            </li>
-                                            <li>
-                                                <router-link to="/call-to-action">call To Action</router-link>
-                                            </li>
-                                            <li>
-                                                <router-link to="/counter">Counter</router-link>
-                                            </li>
-                                            <li>
-                                                <router-link to="/service">Service</router-link>
+                                              <a href="https://github.com/datamllab/tods"
+                                                 target="_blank">实现参考</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -77,20 +66,12 @@
                         </div>
                         <div class="col-lg-2 col-md-6 col-sm-6 col-12">
                             <div class="rn-footer-widget">
-                                <h4 class="title">Company</h4>
+                                <h4 class="title">数据处理可视化</h4>
                                 <div class="inner">
                                     <ul class="footer-link link-hover">
                                         <li>
-                                            <router-link to="/pricing">Pricing</router-link>
-                                        </li>
-                                        <li>
-                                            <router-link to="/tab">Tab Styles</router-link>
-                                        </li>
-                                        <li>
-                                            <router-link to="/service">Service</router-link>
-                                        </li>
-                                        <li>
-                                            <router-link to="/social-share">Social</router-link>
+                                          <a href="https://gallery.pyecharts.org/#/"
+                                             target="_blank">实现参考</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -98,20 +79,12 @@
                         </div>
                         <div class="col-lg-2 col-md-6 col-sm-6 col-12">
                             <div class="rn-footer-widget">
-                                <h4 class="title">Resources</h4>
+                                <h4 class="title">数字化大屏</h4>
                                 <div class="inner">
                                     <ul class="footer-link link-hover">
                                         <li>
-                                            <router-link to="/team">Team</router-link>
-                                        </li>
-                                        <li>
-                                            <router-link to="/testimonial">Testimonial</router-link>
-                                        </li>
-                                        <li>
-                                            <router-link to="/service">Service</router-link>
-                                        </li>
-                                        <li>
-                                            <router-link to="/timeline">Timeline</router-link>
+                                          <a href="https://github.com/daidaibg/IofTV-Screen"
+                                             target="_blank">实现参考</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -119,31 +92,27 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="rn-footer-widget">
-                                <h4 class="title">Stay With Us.</h4>
+                                <h4 class="title">技术改变世界</h4>
                                 <div class="inner">
-                                    <h6 class="subtitle">2000+ Our clients are subscribe Around the World</h6>
-                                    <ul class="social-icon social-default justify-content-start">
-                                        <li>
-                                            <a href="https://www.facebook.com/" target="_blank">
-                                                <Icon name="facebook"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.twitter.com" target="_blank">
-                                                <Icon name="twitter"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.instagram.com/" target="_blank">
-                                                <Icon name="instagram"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.linkedin.com/" target="_blank">
-                                                <Icon name="linkedin"/>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <h6 class="subtitle">使用AI为风力发电事业加速</h6>
+                                  <div class="footer-link link-hover">
+                                    <a href="http://www.cnsoftbei.com/" target="_blank"
+                                       style="margin-right: 15px;font-size:medium;">
+                                      中国软件杯
+                                    </a>
+                                    <a href="https://www.paddlepaddle.org.cn/" target="_blank"
+                                       style="margin-right: 15px;font-size:medium;">
+                                      PaddlePaddle
+                                    </a>
+                                    <a href="https://github.com/PaddlePaddle/PaddleTS" target="_blank"
+                                       style="margin-right: 15px;font-size:medium;">
+                                      PaddleTS
+                                    </a>
+                                    <a href="https://www.paddlepaddle.org.cn/paddle/paddleinference" target="_blank"
+                                       style="margin-right: 15px;font-size:medium;">
+                                      PaddleInference
+                                    </a>
+                                  </div>
                                 </div>
                             </div>
                         </div>
@@ -152,7 +121,6 @@
             </div>
             <Newsletter v-if="data.showNewsletter"/>
         </footer>
-         End Footer Area
 
         <Copyright v-if="data.showCopyright"/>
 

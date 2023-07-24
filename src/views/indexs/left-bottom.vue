@@ -19,7 +19,7 @@
             <div class="dibu"></div>
             <div class="flex">
               <div class="info">
-                <span class="labels">设备ID：</span>
+                <span class="labels">风场ID：</span>
                 <span class="contents zhuyao doudong wangguan">
                   {{ item.gatewayno }}</span
                 >
@@ -30,6 +30,8 @@
                   {{ item.createTime }}</span
                 >
               </div>
+
+
             </div>
 
               <span
@@ -42,7 +44,8 @@
               >
 
             <div class="info addresswrap">
-              <span class="labels">地址：</span>
+              
+              <span class="labels">风场所在地：</span>
               <span class="contents ciyao" style="font-size: 12px">
                 {{ addressHandle(item) }}</span
               >

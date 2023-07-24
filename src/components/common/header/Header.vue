@@ -95,17 +95,17 @@
                   <a :class="data.buyButtonClass" href="#" @click="showDialog" v-if="!login">
                     注册/登录
                   </a>
-<!--                  <div class="has-droupdown has-menu-child-item" v-if="login"-->
-<!--                       style="display: flex;flex-direction: row;">-->
-<!--                    <p style="margin-top: 30px;margin-right: 25px;">-->
-<!--                      欢迎您，{{ username }}-->
-<!--                    </p>-->
-<!--                    <div @click="toPersonalPage" style="cursor: pointer;margin-top: 23px;" slot="reference">-->
-<!--                      <el-avatar :src="avatar"></el-avatar>-->
-<!--                    </div>-->
-<!--                    <i class="el-icon-switch-button" v-if="login" title="登出" @click="logout"-->
-<!--                       style="margin-top:35px;font-size: 20px;margin-left: 20px;cursor: pointer"></i>-->
-<!--                  </div>-->
+                  <div class="has-droupdown has-menu-child-item" v-if="login"
+                       style="display: flex;flex-direction: row;">
+                    <p style="margin-top: 30px;margin-right: 25px;">
+                      欢迎您，{{ username }}
+                    </p>
+                    <div @click="toPersonalPage" style="cursor: pointer;margin-top: 23px;" slot="reference">
+                      <el-avatar :src="avatar"></el-avatar>
+                    </div>
+                    <i class="el-icon-switch-button" v-if="login" title="登出" @click="logout"
+                       style="margin-top:35px;font-size: 20px;margin-left: 20px;cursor: pointer"></i>
+                  </div>
                 </div>
                 <!-- End Header Btn  -->
 
@@ -120,21 +120,21 @@
                 </div>
                 <!-- Start Mobile-Menu-Bar -->
 
-                <div v-if="data.showThemeSwitcherButton" id="my_switcher" class="my_switcher">
-                  <ul>
-                    <li>
-                      <a href="javascript: void(0);"
-                         @click.prevent="AppFunctions.toggleClass('body', 'active-light-mode')">
-                        <img class="light-icon"
-                             src="../../../assets/images/icons/sun-01.svg"
-                             alt="Sun images">
-                        <img class="dark-icon"
-                             src="../../../assets/images/icons/vector.svg"
-                             alt="Moon Images">
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+<!--                <div v-if="data.showThemeSwitcherButton" id="my_switcher" class="my_switcher">-->
+<!--                  <ul>-->
+<!--                    <li>-->
+<!--                      <a href="javascript: void(0);"-->
+<!--                         @click.prevent="AppFunctions.toggleClass('body', 'active-light-mode')">-->
+<!--                        <img class="light-icon"-->
+<!--                             src="../../../assets/images/icons/sun-01.svg"-->
+<!--                             alt="Sun images">-->
+<!--                        <img class="dark-icon"-->
+<!--                             src="../../../assets/images/icons/vector.svg"-->
+<!--                             alt="Moon Images">-->
+<!--                      </a>-->
+<!--                    </li>-->
+<!--                  </ul>-->
+<!--                </div>-->
               </div>
             </div>
           </template>
@@ -213,6 +213,8 @@ import AppFunctions from '../../../helpers/AppFunctions'
 import Nav from './Nav'
 import Logo from '../../elements/logo/Logo'
 import Login from "@/components/login/Login";
+import eventBus from "@/global/eventBus";
+
 export default {
   name: 'Header',
   props: {
@@ -220,15 +222,25 @@ export default {
       default: null
     }
   },
-  components: {Logo, Nav, MobileMenu, Icon,Login},
+  components: {Logo, Nav, MobileMenu, Icon, Login},
   data() {
     return {
       AppFunctions,
-      login:false
+      login: false,
+      dialogFormVisible: false,
+      avatar: '',
+      username: ''
     }
   },
   methods: {
-    showDialog(){
+    logout() {
+      this.$message.success('登出成功')
+      this.$ls.clear()
+      eventBus.$emit('userLogin', false)
+      this.$router.push('/')
+      location.reload();
+    },
+    showDialog() {
       this.$refs.loginPage.show()
     },
     toggleStickyHeader() {
@@ -238,13 +250,30 @@ export default {
       } else if (scrolled <= 100) {
         AppFunctions.removeClass('.header-default', 'sticky');
       }
-    }
+    },
+    toPersonalPage() {
+      this.$router.push('/personal')
+    },
   },
   created() {
     window.addEventListener('scroll', this.toggleStickyHeader);
+    eventBus.$on('userLogin',data=>{
+      this.login = data
+      if(this.login){
+        this.avatar = 'http://127.0.0.1:8888'+this.$ls.get('userInfo').avatar.substring(1)
+        this.username = this.$ls.get('userInfo').account
+      }else {
+        this.$ls.clear()
+      }
+    })
   },
   mounted() {
     this.toggleStickyHeader();
+    this.login = this.$ls.get('userInfo',null)!=null
+    if(this.login){
+      this.username=this.$ls.get('userInfo').account
+      this.avatar = 'http://127.0.0.1:8888'+this.$ls.get('userInfo').avatar.substring(1)
+    }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.toggleStickyHeader);

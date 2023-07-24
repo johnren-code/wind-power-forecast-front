@@ -7,20 +7,20 @@
                     <div class="copyright-left">
                         <ul class="ft-menu link-hover">
                             <li>
-                                <router-link to="#">Privacy Policy</router-link>
+                                <router-link to="#">风场管理</router-link>
                             </li>
                             <li>
-                                <router-link to="#">Terms And Condition</router-link>
+                                <router-link to="#">实时滚动预测</router-link>
                             </li>
                             <li>
-                                <router-link to="/contact">Contact Us</router-link>
+                                <router-link to="#">数据处理</router-link>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-4 col-sm-12 col-12">
                     <div class="copyright-right text-center text-lg-end">
-                        <p class="copyright-text">© Doob {{ new Date().getFullYear() }}</p>
+                        <p class="copyright-text">© 初学时序预测 {{ new Date().getFullYear() }}</p>
                     </div>
                 </div>
             </div>

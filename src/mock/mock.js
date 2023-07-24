@@ -4,18 +4,27 @@ Mock.setup({
     timeout: '200-600'
 })
 
+
 const Random = Mock.Random;
-// 用户总览
+// 发电总量
 function countUserNum() {
     const a = Mock.mock({
         success: true,
         data: {
-            offlineNum:'@integer(1, 100)',
-            lockNum: '@integer(1, 10)',
-            totalNum:218
+            wind_power1:'@float(10, 100)',
+            wind_power2:'@float(10, 100)',
+            wind_power3:'@float(10, 100)',
+            wind_power4:'@float(10, 100)',
+            wind_power5:'@float(10, 100)',
+            wind_power6:'@float(10, 100)',
+            wind_power7:'@float(10, 100)',
+            wind_power8:'@float(10, 100)',
+            wind_power9:'@float(10, 100)',
+            wind_power10:'@float(10, 100)',
+            totalPower: '@float(1000, 2000)',
         }
     })
-    a.data.onlineNum=a.data.totalNum-a.data.offlineNum-a.data.lockNum
+    // a.data.onlineNum=a.data.totalNum-a.data.offlineNum-a.data.lockNum
     return a
 }
 
@@ -41,7 +50,7 @@ function countDeviceNum() {
 
 Mock.mock(new RegExp('countDeviceNum'), 'get', countDeviceNum)
 
-// /设备总览 
+// /设备提醒 
 
 function sbtx() {
     const a = Mock.mock({
@@ -54,7 +63,7 @@ function sbtx() {
                     countyName: "@county()",
                     createTime: "@datetime('yyyy-MM-dd HH:mm:ss')",
                     deviceId: "6c512d754bbcd6d7cd86abce0e0cac58",
-                    "gatewayno|+1": 10000,
+                    "gatewayno|+1": [11,12,13,14,15,16,17,18,19,20],
                     "onlineState|1": [0, 1],
 
                 }
@@ -112,11 +121,14 @@ function alarmNum() {
     const a = Mock.mock({
         success: true,
         data: {
-            dateList:['2021-11', '2021-12', '2022-01', '2022-02', '2022-03',"2022-04"],
-            "numList|6":[
+            dateList:['2021-11', '2021-12', '2022-01', '2022-02', '2022-03',"2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10"],
+            "numList|12":[
                 '@integer(0, 1000)'
             ],
-            "numList2|6":[
+            "numList2|12":[
+                '@integer(0, 1000)'
+            ],
+            "numList3|12":[
                 '@integer(0, 1000)'
             ]
         }
@@ -132,18 +144,31 @@ function ssyj() {
         success: true,
         data: {
             "list|40":[{
-                alertdetail: "@csentence(5,10)",
-                "alertname|1": ["水浸告警","各种报警"],
-                alertvalue: "@float(60, 200)",
+                // alertdetail: "@csentence(5,10)",
+                "alertdetail|+1": [
+                    "高风速报警。风速超过设定的安全范围",
+                    "低风速报警。风速过低,无法有效发电",
+                    "过温报警。部分组件因温度过高出现故障",
+                    "超负荷报警。超过设计负荷运行，设备过载",
+                    "电网故障报警。无法正常传输电能至电网",
+                    "偏航报警。风力发电机出现偏航现象",
+                    "设备故障报警。考虑传感器故障、控制系统故障等",
+                ],
+                alertvalue: "@integer(1, 10)",
                 createtime: "2022-04-19 08:38:33",
                 deviceid: null,
-                "gatewayno|+1": 10000,
+                "gatewayno|+1": [11,12,13,14,15,16,17,18,19,20],
                 phase: "A1",
                 sbInfo: "@csentence(10,18)",
-                "terminalno|+1": 100,
+                "terminalno|+1": 101,
                 provinceName: "@province()",
                 cityName: '@city()',
                 countyName: "@county()",
+                // 转速、温度、电压、功率
+                rotationSpeed: "@float(0,5000)",
+                temperature: "@float(20,300)",
+                voltage: "@float(0,10000)",
+                power: "@float(0,10000)",
             }],
             
         }
@@ -180,7 +205,7 @@ Mock.mock(new RegExp('installationPlan'), 'get', installationPlan)
 //报警排名 
 function ranking() {
    //多生成几个避免重复 重复会报错
-  let num =Mock.mock({"list|48":[{ value:"@integer(50,1000)",name:"@city()"}]}).list
+  let num =Mock.mock({"list|48":[{ value:"@integer(50,1000)",name:"风场@integer(11,20)"}]}).list
 //   console.log(num);
   let newNum =[],numObj={}
   num.map(item=>{

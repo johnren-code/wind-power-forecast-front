@@ -7,16 +7,16 @@
           <div class="col-lg-12">
             <div class="inner text-center">
               <div class="react-image mb--20" data-aos="fade-up">
-                <img src="../assets/images/demo/badge-vue-js.png" alt="Doob Vue"/>
+                <img src="../assets/images/demo/logo.png" alt="Doob Vue"/>
               </div>
               <h1 class="title display-two" data-aos="fade-up" data-aos-delay="100">
-                风电功率预测平台 <br/>
-                <span class="theme-gradient">时序预测</span> &
-                <span class="theme-gradient">风电功率预测</span>
+                龙源风电管理与预测系统 <br/>
+                <span class="theme-gradient">实时管理</span> &
+                <span class="theme-gradient">功率预测</span>
                 <br/>
               </h1>
               <p class="description" data-aos="fade-up" data-aos-delay="150">
-                功率预测 / 数据可视化 / 滚动预测
+                风险监控 / 可视分析 / 实时更新 / 滚动预测 / 决策支持
               </p>
               <div class="button-group" data-aos="fade-up" data-aos-delay="200">
                 <a class="btn-default btn-large round btn-icon" href="#demo">查看详情
@@ -30,33 +30,25 @@
     </div>
     <!-- End Slider Area -->
 
-    <Separator/>
+    <Separator />
 
     <!-- Start Our Demo -->
     <div class="rn-demo-area rn-section-gap" id="demo">
       <div class="wrapper plr--150 plr_lg--30 plr_md--30 plr_sm--30">
         <div class="row">
           <div class="col-lg-12">
-            <SectionTitle
-                text-align="center"
-                subtitle="All Demo Here"
-                title="Doob All Demo."
-                description="We create a business and consulting Vue.js template with 50+ elements features. <br /> 19+ demo pages, faster loading and well documentated code."
-                data-aos="fade-up"
-            />
+            <SectionTitle text-align="center" subtitle="Functions List" title="功能列表"
+                          description="使用AI对风力发电赋能，是加速AI落地的重要举措" data-aos="fade-up" />
           </div>
         </div>
         <div class="row row--15">
-          <div class="col-lg-4 col-md-6 col-12 mt--40"
-               v-for="(page, index) in demoPages"
-               :key="index"
-               data-aos="fade-up"
+          <div class="col-lg-4 col-md-6 col-12 mt--40" v-for="(page, index) in demoPages" :key="index" data-aos="fade-up"
                :data-aos-delay="100 + index">
             <div class="single-demo">
               <router-link :to="page.url">
                 <div class="thumbnail">
-                  <img class="image-dark" :src="page.image" alt="Corporate images"/>
-                  <img class="image-light" :src="page.imageLight" alt="Corporate images"/>
+                  <img class="image-dark" :src="page.image" alt="Corporate images" />
+                  <img class="image-light" :src="page.imageLight" alt="Corporate images" />
                   <span v-if="page.badge" class="label-badge">{{ page.badge }}</span>
                 </div>
               </router-link>
@@ -70,43 +62,36 @@
     </div>
     <!-- End Our Demo -->
 
-    <Separator/>
+    <Separator />
 
     <!-- Start Inner Pages -->
     <div class="rn-inner-pages rn-section-gap">
       <div class="wrapper plr--150 plr_lg--30 plr_md--30 plr_sm--30">
         <div class="row">
           <div class="col-lg-12">
-            <SectionTitle
-                text-align="center"
-                subtitle="All Others Pages"
-                title="All Others Pages."
-                description="Have a nice inner pages include in doob template."
-                data-aos="fade-up"
-            />
+            <SectionTitle text-align="center" subtitle="Statics Of Models" title="模型表现"
+                          description="模型对10个风场的的平均预测分数为0.74468，其中14，18，19，20号风场预测精度尤佳" data-aos="fade-up" />
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4 col-md-6 col-12 mt--40"
-               v-for="(page, index) in innerPages"
-               :key="index"
-               data-aos="fade-up"
-               :data-aos-delay="100 + index">
-            <div class="single-demo">
-              <router-link :to="page.url">
-                <div class="thumbnail">
-                  <img class="image-dark" :src="page.image" alt="Corporate images"/>
-                  <img class="image-light" :src="page.imageLight" alt="Corporate images"/>
-                </div>
-              </router-link>
-              <h4 class="title">
-                <router-link :to="page.url">{{ page.title }}</router-link>
-              </h4>
-            </div>
-          </div>
+          <Counter text-align="center" :counter-data="counterOneData" column="col-lg-3 col-md-6 col-sm-6 col-12" />
         </div>
       </div>
     </div>
+    <Separator />
+    <section class="rn-service-area rn-section-gap">
+      <div class="container">
+        <div class="row row--30">
+          <div class="col-lg-12">
+            <SectionTitle class="mb--50" text-align="center" subtitle="Advantages of Product" title="产品优势"
+                          description="相对于传统的风电功率预测方法<br/>基于神经网络的方法可以通过大数据充分逼近复杂的非线性关系，更好地协调多种输入信息关系，处理定量和定性的信息，具有更强的鲁棒性和准确性" data-aos="fade-up"
+                          data-aos-delay="60" />
+          </div>
+        </div>
+        <ServiceOne service-style="service__style--1 bg-color-blackest radius mt--25" icon-size="62"
+                    text-align="center" />
+      </div>
+    </section>
     <!-- End Inner Pages -->
   </Layout>
 </template>
@@ -116,158 +101,52 @@ import Layout from '../components/common/Layout'
 import Icon from '../components/icon/Icon'
 import Separator from '../components/elements/separator/Separator'
 import SectionTitle from '../components/elements/sectionTitle/SectionTitle'
+import Counter from "@/components/elements/counterUp/Counter";
+import ServiceOne from "@/components/elements/service/ServiceOne";
 
 export default {
   name: 'Home',
-  components: {Icon, Layout, Separator, SectionTitle},
+  components: {Icon, Layout, Separator, SectionTitle, Counter, ServiceOne},
   data() {
     return {
+      counterOneData: [
+        {
+          number: 96,
+          title: '风场14',
+        },
+        {
+          number: 97,
+          title: '风场18',
+        },
+        {
+          number: 97,
+          title: '风场19',
+        },
+        {
+          number: 96,
+          title: '风场20',
+        }
+      ],
       demoPages: [
         {
-          url: '/business-consulting',
-          image: require('@/assets/images/demo/business-consulting.png'),
+          url: '/home',
+          image: require('@/assets/images/home/picture1.png'),
           imageLight: require('@/assets/images/demo/business-consulting-light.png'),
-          title: 'Business Consulting',
+          title: '风场管理',
           badge: '',
         },
         {
-          url: '/business-consulting-2',
-          image: require('@/assets/images/demo/business-consulting-2.png'),
+          url: '/home',
+          image: require('@/assets/images/home/picture2.png'),
           imageLight: require('@/assets/images/demo/business-consulting-2-light.png'),
-          title: 'Business Consulting 2',
+          title: '实时预测',
           badge: '',
         },
         {
-          url: '/corporate',
-          image: require('@/assets/images/demo/corporate.png'),
+          url: '/home',
+          image: require('@/assets/images/home/picture3.png'),
           imageLight: require('@/assets/images/demo/corporate-light.png'),
-          title: 'Corporate',
-          badge: '',
-        },
-        {
-          url: '/startup',
-          image: require('@/assets/images/demo/startup.png'),
-          imageLight: require('@/assets/images/demo/startup-light.png'),
-          title: 'Startup',
-          badge: 'Trendy',
-        },
-        {
-          url: '/web-agency',
-          image: require('@/assets/images/demo/web-agency.png'),
-          imageLight: require('@/assets/images/demo/web-agency-light.png'),
-          title: 'Web Agency',
-          badge: 'Trendy',
-        },
-        {
-          url: '/international-consulting',
-          image: require('@/assets/images/demo/international-consulting.png'),
-          imageLight: require('@/assets/images/demo/international-consulting-light.png'),
-          title: 'International Consulting',
-          badge: 'Trendy',
-        },
-        {
-          url: '/consulting',
-          image: require('@/assets/images/demo/consulting.png'),
-          imageLight: require('@/assets/images/demo/consulting-light.png'),
-          title: 'Consulting',
-          badge: 'Hot',
-        },
-        {
-          url: '/finance',
-          image: require('@/assets/images/demo/finance.png'),
-          imageLight: require('@/assets/images/demo/finance-light.png'),
-          title: 'Finance',
-          badge: '',
-        },
-        {
-          url: '/digital-agency',
-          image: require('@/assets/images/demo/digital-agency.png'),
-          imageLight: require('@/assets/images/demo/digital-agency-light.png'),
-          title: 'Digital Agency',
-          badge: '',
-        },
-        {
-          url: '/seo-agency',
-          image: require('@/assets/images/demo/seo-agency.png'),
-          imageLight: require('@/assets/images/demo/seo-agency-light.png'),
-          title: 'SEO Agency',
-          badge: '',
-        },
-        {
-          url: '/company',
-          image: require('@/assets/images/demo/company.png'),
-          imageLight: require('@/assets/images/demo/company-light.png'),
-          title: 'Company',
-          badge: '',
-        },
-        {
-          url: '/personal-portfolio',
-          image: require('@/assets/images/demo/portfolio.png'),
-          imageLight: require('@/assets/images/demo/portfolio-light.png'),
-          title: 'Personal Portfolio',
-          badge: '',
-        },
-        {
-          url: '/freelancer',
-          image: require('@/assets/images/demo/freelancer.png'),
-          imageLight: require('@/assets/images/demo/freelancer-light.png'),
-          title: 'Freelancer',
-          badge: 'Hot',
-        },
-        {
-          url: '/marketing-agency',
-          image: require('@/assets/images/demo/marketing.png'),
-          imageLight: require('@/assets/images/demo/marketing-light.png'),
-          title: 'Marketing Agency',
-          badge: '',
-        },
-        {
-          url: '/travel-agency',
-          image: require('@/assets/images/demo/travel-agency.png'),
-          imageLight: require('@/assets/images/demo/travel-agency-light.png'),
-          title: 'Travel Agency',
-          badge: '',
-        },
-        {
-          url: '/business',
-          image: require('@/assets/images/demo/business.png'),
-          imageLight: require('@/assets/images/demo/business-light.png'),
-          title: 'Business',
-          badge: '',
-        },
-        {
-          url: '/event-conference',
-          image: require('@/assets/images/demo/event-conference.png'),
-          imageLight: require('@/assets/images/demo/event-conference-light.png'),
-          title: 'Event Conference',
-          badge: '',
-        },
-        {
-          url: '/creative-portfolio',
-          image: require('@/assets/images/demo/creative-portfolio.png'),
-          imageLight: require('@/assets/images/demo/creative-portfolio-light.png'),
-          title: 'Creative Portfolio',
-          badge: '',
-        },
-        {
-          url: '/about',
-          image: require('@/assets/images/demo/about-us.png'),
-          imageLight: require('@/assets/images/demo/about-us-light.png'),
-          title: 'Corporate About',
-          badge: '',
-        },
-        {
-          url: '#demo',
-          image: require('@/assets/images/demo/coming-soon.png'),
-          imageLight: require('@/assets/images/demo/coming-soon.png'),
-          title: 'Finance Consulting',
-          badge: '',
-        },
-        {
-          url: '#demo',
-          image: require('@/assets/images/demo/coming-soon.png'),
-          imageLight: require('@/assets/images/demo/coming-soon.png'),
-          title: 'Finance Consulting',
+          title: '数据处理',
           badge: '',
         },
       ],

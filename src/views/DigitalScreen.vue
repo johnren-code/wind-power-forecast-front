@@ -16,7 +16,7 @@
             <div class="guang"></div>
             <div class="d-flex jc-center">
               <div class="title">
-                <span class="title-text">龙源风电功率预测平台</span>
+                <span class="title-text">龙源风电运营管理平台</span>
               </div>
             </div>
             <div class="timers">
@@ -40,16 +40,16 @@
                 <!-- <div class="item">实时监测</div> -->
 
               </div>
-              <ItemWrap class="contetn_left-top contetn_lr-item" title="风机总览">
+              <ItemWrap class="contetn_left-top contetn_lr-item" title="风场总览">
                 <LeftTop/>
 
               </ItemWrap>
-              <ItemWrap class="contetn_left-center contetn_lr-item" title="用户总览">
+              <ItemWrap class="contetn_left-center contetn_lr-item" title="发电总量(TOP8)">
                 <LeftCenter />
               </ItemWrap>
               <ItemWrap
                   class="contetn_left-bottom contetn_lr-item"
-                  title="设备提醒"
+                  title="风场提醒"
                   style="padding: 0 10px 16px 10px"
               >
                 <LeftBottom />
@@ -77,7 +77,7 @@
               </ItemWrap>
               <ItemWrap
                   class="contetn_left-bottom contetn_lr-item"
-                  title="数据统计图 "
+                  title="报警详情"
               >
                 <RightBottom />
               </ItemWrap>

@@ -20,11 +20,11 @@
               <el-upload
                   class="upload-demo"
                   drag
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  multiple>
+                  action="/api/file/upload"
+                  multiple
+                  :on-success="handleAvatarSuccess">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip">只能上传csv格式的文件</div>
               </el-upload>
             </el-col>
           </el-row>
@@ -56,6 +56,7 @@ export default {
       // dialogImageUrl: 'D:/runajianbeiA3/front/3d-image-seg-front/src/assets/images/about/about-1.png',
       dialogVisible: false,
       disabled: false,
+      uploadFileUrl:''
     }
   },
   methods: {
@@ -65,11 +66,31 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
+    handleAvatarSuccess(res,file){
+      console.log('成功上传',res)
+      this.uploadFileUrl = res.url
+    },
     onSubmit() {
-
+      if(!this.farmId||!this.uploadFileUrl){
+        this.$message.error('请填写风电场ID或上传风电场数据文件')
+      }else {
+        axios.post('/api/windFarmUrl/createFarm',{
+          farmId:this.farmId,
+          originFileUrl:this.uploadFileUrl
+        }).then(res=>{
+          if(res.status){
+            this.$message.success('创建成功')
+            this.$router.push(`/pred/${this.farmId}`)
+          }else {
+            this.$message.error(res.message)
+          }
+          console.log(res)
+        })
+      }
     },
     reset() {
-      this.form = []
+      this.uploadFileUrl = ''
+      this.farmId = ''
     }
   }
 }

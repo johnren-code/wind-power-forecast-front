@@ -8,7 +8,7 @@
     <div class="mapwrap">
       <dv-border-box-13>
         <div class="quanguo" @click="getData('china')" v-if="code !== 'china'">
-          中国
+          返回
         </div>
 
         <Echart id="CenterMap" :options="options" ref="CenterMap" />
@@ -25,7 +25,7 @@ import { GETNOBASE } from "api";
 export default {
   data() {
     return {
-      maptitle: "风机分布图",
+      maptitle: "风场分布图",
       options: {},
       code: "china", //china 代表中国 其他地市是行政编码
       echartBindClick: false,

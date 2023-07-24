@@ -86,10 +86,21 @@ export default {
       });
     },
     init() {
-      let total = this.countUserNumData.totalNum;
-      let colors = ["#ECA444", "#33A1DB", "#56B557"];
+      let total = this.countUserNumData.totalPower.toFixed(1);
+      let colors = [
+          "#ECA444",
+          "#33A1DB",
+          "#56B557",
+          "#C661D0",
+          "#F05A51",
+          "#8AC147",
+          "#F7A321",
+          "#4898D3",
+          "#E9573F",
+          "#9CC85E"
+      ];
       let piedata = {
-        name: "用户总览",
+        name: "上年度发电总量（万千瓦时）",
         type: "pie",
         radius: ["42%", "65%"],
         avoidLabelOverlap: false,
@@ -101,42 +112,74 @@ export default {
 
         color: colors,
         data: [
-          // {
-          //   value: 0,
-          //   name: "告警",
-          //   label: {
-          //     shadowColor: colors[0],
-          //   },
-          // },
           {
-            value: this.countUserNumData.lockNum,
-            name: "锁定",
+            value: this.countUserNumData.wind_power1.toFixed(1),
+            name: "风场11",
             label: {
               shadowColor: colors[0],
             },
-          },
-          {
-            value: this.countUserNumData.onlineNum,
-            name: "在线",
-            label: {
-              shadowColor: colors[2],
-            },
-          },
-          {
-            value: this.countUserNumData.offlineNum,
-            name: "离线",
+          },{
+            value: this.countUserNumData.wind_power2.toFixed(1),
+            name: "风场12",
             label: {
               shadowColor: colors[1],
             },
+          },{
+            value: this.countUserNumData.wind_power3.toFixed(1),
+            name: "风场13",
+            label: {
+              shadowColor: colors[2],
+            },
+          },{
+            value: this.countUserNumData.wind_power4.toFixed(1),
+            name: "风场14",
+            label: {
+              shadowColor: colors[3],
+            },
+          },{
+            value: this.countUserNumData.wind_power5.toFixed(1),
+            name: "风场15",
+            label: {
+              shadowColor: colors[4],
+            },
+          },{
+            value: this.countUserNumData.wind_power6.toFixed(1),
+            name: "风场16",
+            label: {
+              shadowColor: colors[5],
+            },
+          },{
+            value: this.countUserNumData.wind_power7.toFixed(1),
+            name: "风场17",
+            label: {
+              shadowColor: colors[6],
+            },
+          },{
+            value: this.countUserNumData.wind_power8.toFixed(1),
+            name: "风场18",
+            label: {
+              shadowColor: colors[7],
+            },
           },
-
-
+          // {
+          //   value: this.countUserNumData.wind_power9.toFixed(1),
+          //   name: "风场19",
+          //   label: {
+          //     shadowColor: colors[8],
+          //   },
+          // },{
+          //   value: this.countUserNumData.wind_power10.toFixed(1),
+          //   name: "风场20",
+          //   label: {
+          //     shadowColor: colors[9],
+          //   },
+          // },
         ],
       };
       this.options = {
         title: {
           // zlevel: 0,
-          text: ["{value|" + total + "}", "{name|总数}"].join("\n"),
+          text: ["{value|" + total + "}", "{name|万千瓦时}"].join("\n"),
           top: "center",
           left: "center",
           textStyle: {
@@ -173,7 +216,7 @@ export default {
             ...piedata,
             tooltip: { show: true },
             label: {
-              formatter: "   {b|{b}}   \n   {c|{c}个}   {per|{d}%}  ",
+              formatter: "   {b|{b}}   \n   {c|{c}}   {per|{d}%}  ",
               //   position: "outside",
               rich: {
                 b: {

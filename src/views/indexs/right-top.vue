@@ -56,7 +56,7 @@ export default {
         if (res.success) {
           this.countUserNumData = res.data;
           this.$nextTick(() => {
-            this.init(res.data.dateList, res.data.numList, res.data.numList2),
+            this.init(res.data.dateList, res.data.numList, res.data.numList2, res.data.numList3),
               this.switper();
           });
         } else {
@@ -91,7 +91,7 @@ export default {
         );
       });
     },
-    init(xData, yData, yData2) {
+    init(xData, yData, yData2, yData3) {
       this.option = {
         xAxis: {
           type: "category",
@@ -156,7 +156,7 @@ export default {
             type: "line",
             smooth: true,
             symbol: "none", //去除点
-            name: "报警1次数",
+            name: "高风速报警次数",
             color: "rgba(252,144,16,.7)",
             areaStyle: {
                 //右，下，左，上
@@ -197,7 +197,7 @@ export default {
                     padding: [7, 14],
                     borderWidth: 0.5,
                     borderColor: "rgba(252,144,16,.5)",
-                    formatter: "报警1：{c}",
+                    formatter: "高风速报警：{c}",
                   },
                 },
                 {
@@ -223,7 +223,7 @@ export default {
             type: "line",
             smooth: true,
             symbol: "none", //去除点
-            name: "报警2次数",
+            name: "过温报警次数",
             color: "rgba(9,202,243,.7)",
             areaStyle: {
                 //右，下，左，上
@@ -264,7 +264,75 @@ export default {
                     borderRadius: 6,
                     borderColor: "rgba(9,202,243,.5)",
                     padding: [7, 14],
-                    formatter: "报警2：{c}",
+                    formatter: "过温报警：{c}",
+                    borderWidth: 0.5,
+                  },
+                },
+                {
+                  name: "最大值",
+                  type: "max",
+                  valueDim: "y",
+                  symbol: "circle",
+                  symbolSize: 6,
+                  itemStyle: {
+                    color: "#09CAF3",
+                    shadowColor: "#09CAF3",
+                    shadowBlur: 8,
+                  },
+                  label: {
+                    formatter: "",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            data: yData3,
+            type: "line",
+            smooth: true,
+            symbol: "none", //去除点
+            name: "超负荷报警次数",
+            color: "rgba(148,0,211,.7)",
+            areaStyle: {
+                //右，下，左，上
+                color: new graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1,
+                  [
+                    {
+                      offset: 0,
+                      color: "rgba(148,0,211,.7)",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(148,0,211,.0)",
+                    },
+                  ],
+                  false
+                ),
+            },
+            markPoint: {
+              data: [
+                {
+                  name: "最大值",
+                  type: "max",
+                  valueDim: "y",
+                  symbol: "rect",
+                  symbolSize: [60, 26],
+                  symbolOffset: [0, -20],
+                  itemStyle: {
+                    color: "rgba(0,0,0,0)",
+                  },
+                  label: {
+                    color: "#09CAF3",
+                    backgroundColor: "rgba(148,0,211,.1)",
+
+                    borderRadius: 6,
+                    borderColor: "rgba(148,0,211,.5)",
+                    padding: [7, 14],
+                    formatter: "超负荷报警：{c}",
                     borderWidth: 0.5,
                   },
                 },

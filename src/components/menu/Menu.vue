@@ -11,10 +11,15 @@
         <el-menu-item index="/pred/new">
           <el-button icon="el-icon-plus" type="text">新建风电场</el-button>
         </el-menu-item>
-        <el-menu-item :index="'/pred/' + item.id.toString()" v-for="item in tableData"
-                      @click="savePath(item.id)">
+
+        <el-menu-item index="/pred/management">
+          <el-button type="text">
+            <i class="iconfont icon-fengji wind-management">风场管理</i></el-button>
+        </el-menu-item>
+        <el-menu-item :index="'/pred/' + item.farmId" v-for="item in tableData"
+                      @click="savePath(item.farmId)">
           <i class="iconfont icon-fengji"></i>
-          <span slot="title" style="margin-left: 10px">风电场{{ item.id }}</span>
+          <span slot="title" style="margin-left: 10px">风电场 {{item.farmId}} </span>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -41,10 +46,29 @@ export default {
       console.log(key, keyPath);
     },
     savePath(path) {
-      sessionStorage.setItem('path', `/powerPred/${path}`)
+      sessionStorage.setItem('path', `/pred/${path}`)
     }
   },
+  watch: {
+    '$route.params': function (to, from) {
+      axios.get('/api/windFarmUrl/getAllFarm').then(res=>{
+        this.tableData = res.data
+        console.log(res)
+      })
+    },
+  },
   mounted() {
+    // axios.post('/api/proj/my', { permission: 'all' }).then(res => {
+    //   // this.form = res.data.result
+    //   this.tableData = res.data.result
+    //   console.log(res.data);
+    // }, err => {
+    //   console.log(err);
+    // })
+    axios.get('/api/windFarmUrl/getAllFarm').then(res=>{
+      this.tableData = res.data
+      console.log(res)
+    })
     this.defaultActive = sessionStorage.getItem('path')
   }
 }
@@ -70,5 +94,9 @@ export default {
   left: 20px; */
   background-color: #202123;
   border: none;
+}
+.wind-management {
+  color: #ffffff;  /* 这是字体颜色，你可以更改为你想要的颜色 */
+  padding-left: 10px; /* 这是<i>标签和文字之间的距离，你可以更改为你想要的距离 */
 }
 </style>

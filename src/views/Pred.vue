@@ -44,26 +44,6 @@ export default {
         }
     },
     methods: {
-        getHistory() {
-            const _this = this
-            axios.post('/history', {
-                username: this.loginForm.username,
-                password: this.loginForm.password
-            })
-                .then(rep => {
-                    if (rep.data.code === 200) {
-                        _this.store.commit('login', rep.data.result)
-
-                        this.$router.push('/video')//否则跳转至首页
-                    } else {
-                        this.$message(rep.data.message)
-                    }
-
-                })
-                .catch(failResponse => {
-                    console.log(failResponse.response)
-                })
-        }
     }
 }
 

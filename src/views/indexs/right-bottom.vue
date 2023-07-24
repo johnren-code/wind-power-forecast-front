@@ -15,31 +15,45 @@
             <div class="dibu"></div>
             <div class="flex">
               <div class="info">
-                <span class="labels ">设备ID：</span>
+                <span class="labels ">风场ID：</span>
                 <span class="contents zhuyao"> {{ item.gatewayno }}</span>
               </div>
               <div class="info">
-                <span class="labels">型号：</span>
-                <span class="contents "> {{ item.terminalno }}</span>
+                <span class="labels">设备型号：</span>
+                <span class="contents "> LYP-W{{ item.terminalno }}</span>
               </div>
               <div class="info">
-                <span class="labels">告警值：</span>
-                <span class="contents warning"> {{ item.alertvalue | montionFilter }}</span>
+                <span class="labels">告警程度：</span>
+                <span class="contents warning"> {{ item.alertvalue }}</span>
               </div>
-            </div>
-
 
             <div class="flex">
 
               <div class="info">
-                <span class="labels"> 地址：</span>
+                <span class="labels"> 风场所在地：</span>
                 <span class="contents ciyao" style="font-size:12px"> {{ item.provinceName }}/{{ item.cityName }}/{{ item.countyName }}</span>
               </div>
               <div class="info time">
                 <span class="labels">时间：</span>
                 <span class="contents" style="font-size:12px"> {{ item.createtime }}</span>
               </div>
-
+              <div class="info">
+                <span class="labels">转速：</span>
+                <span class="contents zhuyao"> {{ item.rotationSpeed | montionFilter }} 转每秒</span>
+              </div>
+              <div class="info">
+                <span class="labels">温度：</span>
+                <span class="contents zhuyao"> {{ item.temperature | montionFilter }} 摄氏度</span>
+              </div>
+              <div class="info">
+                <span class="labels">电压：</span>
+                <span class="contents zhuyao"> {{ item.voltage | montionFilter }} 伏特</span>
+              </div>
+              <div class="info">
+                <span class="labels">功率：</span>
+                <span class="contents zhuyao"> {{ item.power | montionFilter }} 瓦特</span>
+              </div>
+            </div>
             </div>
             <div class="flex">
 

@@ -9,6 +9,11 @@ import DataProcess from "@/views/DataProcess";
 import NewWindFarm from "@/views/NewWindFarm";
 import FarmCreate from "@/views/FarmCreate";
 import Pred from "@/views/Pred";
+import Management from "@/views/Management";
+import Technical from "@/views/Technical";
+import WeatherPred from "@/views/WeatherPred";
+import WeatherSingle from "@/views/WeatherSingle";
+// import Technical from "@/views/Technical";
 Vue.use(VueRouter)
 
 const routes = [
@@ -17,7 +22,7 @@ const routes = [
         name: 'Home',
         component: Home,
         meta: {
-            title: 'Doob || Doob Business and Consulting Bootstrap5 Template',
+            title: '主页',
         },
     },
     {
@@ -25,7 +30,7 @@ const routes = [
         name: 'Home',
         component: Home,
         meta: {
-            title: 'Doob || Doob Business and Consulting Bootstrap5 Template',
+            title: '主页',
         },
     },
     {
@@ -33,7 +38,7 @@ const routes = [
         name: 'PersonalPage',
         component: PersonalPage,
         meta: {
-            title: 'Doob || Doob Business and Consulting Bootstrap5 Template',
+            title: '个人主页',
         },
     },
     {
@@ -62,6 +67,13 @@ const routes = [
                 meta: {
                     title: '创建风电场',
                 }
+            },
+            {
+                path: 'management',
+                component: Management,
+                meta: {
+                    title: '风场管理',
+                }
             }]
     },
     {
@@ -69,7 +81,7 @@ const routes = [
         name: 'DigitalScreen',
         component: DigitalScreen,
         meta: {
-            title: 'Button || Doob Business and Consulting Bootstrap5 Template',
+            title: '数字化大屏',
         },
     },
     {
@@ -77,7 +89,7 @@ const routes = [
         name: 'Error',
         component: ErrorPage,
         meta: {
-            title: '404 || Doob Business and Consulting Bootstrap5 Template',
+            title: '404',
         },
     },
     {
@@ -87,7 +99,37 @@ const routes = [
         meta: {
             title: '数据处理',
         },
-    }
+        children: [{
+            path: ':id(\\d+)',
+            component: DataProcess,
+            meta: {
+                title: '数据处理',
+            }
+        }]
+    },
+    {
+        path: '/technical',
+        name: 'Technical',
+        component: Technical,
+        meta: {
+            title: '技术要点介绍',
+        }
+    },
+    {
+        path: '/weatherPred',
+        name: 'WeatherPred',
+        component: WeatherPred,
+        meta: {
+            title: '气象监控',
+        },
+        children: [{
+            path: ':id(\\d+)',
+            component: WeatherSingle,
+            meta: {
+                title: '气象监控',
+            }
+        }]
+    },
 ]
 
 const router = new VueRouter({

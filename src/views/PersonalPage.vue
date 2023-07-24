@@ -13,11 +13,11 @@
           <div class="form-group">
             <el-upload
                 class="avatar-uploader"
-                :action="''"
+                action="/api/file/upload"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
-              <img v-model="userData.avatarUrl" v-if="userData.avatarUrl" :src="userData.avatarUrl" class="avatar" >
+              <img v-model="userData.avatarUrlBack" v-if="userData.avatarUrlBack" :src="userData.avatarUrlBack" class="avatar" >
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </div>
@@ -38,13 +38,13 @@
                 name="phone"
                 placeholder="请输入新邮箱"
                 required
-                v-model="userData.phone"
+                v-model="userData.email"
             />
           </div>
           <div class="form-title">新密码</div>
           <div class="form-group">
             <input
-                type="text"
+                type="password"
                 name="password"
                 placeholder="请输入新密码"
                 required
@@ -58,7 +58,7 @@
                 name="description"
                 placeholder="请输入个人简介"
                 required
-                v-model="userData.content"
+                v-model="userData.description"
             />
           </div>
           <div class="form-group">
@@ -73,6 +73,8 @@
 <script>
 import Layout from '../components/common/Layout.vue'
 import SectionTitle from '../components/elements/sectionTitle/SectionTitle.vue'
+import axios from "axios";
+import eventBus from "@/global/eventBus";
 export default{
   name:'PersonalPage',
   components:{Layout,SectionTitle},
@@ -84,37 +86,29 @@ export default{
         username:'',
         phone:'',
         password:'',
-        content:'',
-      }
+        description:'',
+        avatarUrlBack:''
+      },
+      id:''
     };
   },
   mounted() {
-    // this.getUserInfo()
+    this.getUserInfo()
   },
   methods: {
-    // getUserInfo(){
-    //   var that = this;
-    //   /* var token =this.$ls.get('userInfo').token */
-    //   that.$axios.get(this.$global.apiUrl+'user/'+this.$ls.get('userInfo').id,{
-    //     headers:{
-    //       'token':this.$ls.get('userInfo').token
-    //     }
-    //   })
-    //       .then(res=>{
-    //         var userInfo=res.data.data;
-    //         this.userData.avatarUrl=userInfo.avatar;
-    //         this.userData.username=userInfo.name;
-    //         this.userData.phone=userInfo.phone;
-    //         this.userData.password=userInfo.password;
-    //         this.userData.content=userInfo.content;
-    //       })
-    //       .catch(function(error) {
-    //         console.log(error);
-    //       });
-    // },
+    getUserInfo(){
+      this.userData.avatarUrlBack = 'http://127.0.0.1:8888'+this.$ls.get('userInfo').avatar.substring(1)
+      this.userData.avatarUrl = this.$ls.get('userInfo').avatar
+      this.userData.username = this.$ls.get('userInfo').account
+      this.userData.email = this.$ls.get('userInfo').email
+      this.userData.password = this.$ls.get('userInfo').password
+      this.userData.description = this.$ls.get('userInfo').description || '这家伙很懒，什么都没有留下'
+      this.id = this.$ls.get('userInfo').id
+    },
     handleAvatarSuccess(res, file) {
       // console.log(res)
-      this.userData.avatarUrl = res.data
+      this.userData.avatarUrl = res.url
+      this.userData.avatarUrlBack = 'http://127.0.0.1:8888'+res.url.substring(1)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -128,31 +122,27 @@ export default{
       }
       return isJPG && isLt2M;
     },
-    // sendEditInformation(){
-    //   var that =this;
-    //   that.$axios.put(this.$global.apiUrl+'user/'+this.$ls.get('userInfo').id,{
-    //     name:this.userData.username,
-    //     password:this.userData.password,
-    //     avatar:this.userData.avatarUrl,
-    //     phone:this.userData.phone,
-    //     content:this.userData.content
-    //   })
-    //       .then(res=>{
-    //         // console.log(res)
-    //         that.$message.success("修改成功！")
-    //         var userInfo = this.$ls.get('userInfo')
-    //         userInfo.name=this.userData.username
-    //         userInfo.avatar=this.userData.avatarUrl
-    //         this.$ls.set('userInfo',userInfo)
-    //         eventBus.$emit('userLogin',true)
-    //         this.$router.push('/personal')
-    //       })
-    //       .catch(function(error) {
-    //         that.$message.error("网络繁忙，请重试！")
-    //         // console.log("失败")
-    //         console.log(error);
-    //       });
-    // }
+    sendEditInformation(){
+      axios.post('/api/user/editInfo',{
+        id:this.id,
+        account:this.userData.username,
+        password:this.userData.password,
+        email:this.userData.email,
+        description:this.userData.description,
+        avatar:this.userData.avatarUrl
+      }).then(res=>{
+        if(!res.status){
+          this.$message.error(res.message)
+        }else {
+          this.$message.success('修改成功')
+          this.$ls.set('userInfo',res.data)
+          eventBus.$emit('userLogin',true)
+          this.$router.push('/')
+        }
+      }).catch(error=>{
+        this.$message.error('发生错误，请稍后再试')
+      })
+    }
   }
 }
 </script>
