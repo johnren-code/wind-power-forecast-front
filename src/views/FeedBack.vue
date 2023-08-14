@@ -131,6 +131,8 @@ export default {
     reset() {
       this.uploadFileUrl = ''
       this.farmId = ''
+      this.stateValue=''
+      this.description=''
     }
   }
 }

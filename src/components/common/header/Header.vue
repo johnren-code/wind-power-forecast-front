@@ -260,7 +260,7 @@ export default {
     eventBus.$on('userLogin',data=>{
       this.login = data
       if(this.login){
-        this.avatar = 'http://124.220.56.38:8888'+this.$ls.get('userInfo').avatar.substring(1)
+        this.avatar = 'http://127.0.0.1:8888'+this.$ls.get('userInfo').avatar.substring(1)
         this.username = this.$ls.get('userInfo').account
       }else {
         this.$ls.clear()
@@ -272,7 +272,7 @@ export default {
     this.login = this.$ls.get('userInfo',null)!=null
     if(this.login){
       this.username=this.$ls.get('userInfo').account
-      this.avatar = 'http://124.220.56.38:8888'+this.$ls.get('userInfo').avatar.substring(1)
+      this.avatar = 'http://127.0.0.1:8888'+this.$ls.get('userInfo').avatar.substring(1)
     }
   },
   beforeDestroy() {

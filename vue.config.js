@@ -13,7 +13,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://124.220.56.38:8888',
+        target: 'http://127.0.0.1:8888',
         pathRewrite: {
           '^/api': '/api'
         },
@@ -21,7 +21,7 @@ module.exports = {
         ws: true,
       },
       '/flask': {
-        target: 'http://localhost:5000',
+        target: 'http://127.0.0.1:5000',
         pathRewrite: {
           '^/flask': ''
         },
