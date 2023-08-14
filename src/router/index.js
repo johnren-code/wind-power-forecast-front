@@ -13,6 +13,9 @@ import Management from "@/views/Management";
 import Technical from "@/views/Technical";
 import WeatherPred from "@/views/WeatherPred";
 import WeatherSingle from "@/views/WeatherSingle";
+import FeedBack from "@/views/FeedBack";
+import Detail from "@/views/Detail";
+import DetailSingle from "@/views/DetailSingle";
 // import Technical from "@/views/Technical";
 Vue.use(VueRouter)
 
@@ -93,6 +96,14 @@ const routes = [
         },
     },
     {
+        path: '/feedback',
+        name: 'FeedBack',
+        component: FeedBack,
+        meta: {
+            title: '异常反馈',
+        },
+    },
+    {
         path: '/dataProcess',
         name: 'DataProcess',
         component: DataProcess,
@@ -127,6 +138,21 @@ const routes = [
             component: WeatherSingle,
             meta: {
                 title: '气象监控',
+            }
+        }]
+    },
+    {
+        path: '/detail',
+        name: 'Detail',
+        component: Detail,
+        meta: {
+            title: '风场详情',
+        },
+        children: [{
+            path: ':id(\\d+)',
+            component: DetailSingle,
+            meta: {
+                title: '风场详情',
             }
         }]
     },

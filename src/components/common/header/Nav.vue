@@ -13,6 +13,12 @@
       <router-link to="/weatherPred/" v-if="isLogin">气象监控</router-link>
     </li>
     <li>
+      <router-link to="/feedback">异常反馈</router-link>
+    </li>
+    <li>
+      <router-link to="/detail">风场详情</router-link>
+    </li>
+    <li>
       <router-link to="/technical">技术要点介绍</router-link>
     </li>
   </ul>
