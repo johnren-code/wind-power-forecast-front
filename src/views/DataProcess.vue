@@ -342,8 +342,8 @@ export default {
         farm_id: this.$route.params.id
       }
     }).then(res => {
-      let resultUrl = 'http://127.0.0.1:8888' + res.data.originFileUrl.substring(1)
-      this.originFileUrl = 'http://127.0.0.1:8888' + res.data.originFileUrl.substring(1)
+      let resultUrl = 'http://124.220.56.38:8888' + res.data.originFileUrl.substring(1)
+      this.originFileUrl = 'http://124.220.56.38:8888' + res.data.originFileUrl.substring(1)
     })
   },
   methods: {
@@ -383,7 +383,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       let url = res.url
-      this.originFileUrl = 'http://127.0.0.1:8888'+res.url.substring(1)
+      this.originFileUrl = 'http://124.220.56.38:8888'+res.url.substring(1)
       console.log(res)
       axios.post('/api/windFarmUrl/updateFarm', {
         farmId: this.$route.params.id,

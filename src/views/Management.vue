@@ -75,13 +75,13 @@ export default {
       })
     },
     downloadRawFile(url){
-      var downloadUrl = 'http://127.0.0.1:8888' + url.substring(1)
+      var downloadUrl = 'http://124.220.56.38:8888' + url.substring(1)
       let a = document.createElement('a')
       a.href = downloadUrl
       a.click();
     },
     downloadProcessFile(url){
-      var downloadUrl = 'http://127.0.0.1:5000' + url.substring(1)
+      var downloadUrl = 'http://124.220.56.38:5000' + url.substring(1)
       let a = document.createElement('a')
       a.href = downloadUrl
       a.click();

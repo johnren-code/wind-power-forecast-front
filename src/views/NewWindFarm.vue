@@ -14,6 +14,16 @@
                 <el-input v-model="farmId" style="width: 70%;"></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="8">
+              <el-form-item label="风场位置">
+                <el-input v-model="location" style="width: 70%;"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="风场风机型号">
+                <el-input v-model="model" style="width: 70%;"></el-input>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row :gutter="24">
             <el-col :span="24">
@@ -56,7 +66,9 @@ export default {
       // dialogImageUrl: 'D:/runajianbeiA3/front/3d-image-seg-front/src/assets/images/about/about-1.png',
       dialogVisible: false,
       disabled: false,
-      uploadFileUrl:''
+      uploadFileUrl:'',
+      location:'',
+      model:''
     }
   },
   methods: {
@@ -71,12 +83,14 @@ export default {
       this.uploadFileUrl = res.url
     },
     onSubmit() {
-      if(!this.farmId||!this.uploadFileUrl){
-        this.$message.error('请填写风电场ID或上传风电场数据文件')
+      if(!this.farmId||!this.uploadFileUrl||!this.location||!this.model){
+        this.$message.error('请填写完整的风场信息或上传风电场数据文件')
       }else {
         axios.post('/api/windFarmUrl/createFarm',{
           farmId:this.farmId,
-          originFileUrl:this.uploadFileUrl
+          originFileUrl:this.uploadFileUrl,
+          location:this.location,
+          model:this.model
         }).then(res=>{
           if(res.status){
             this.$message.success('创建成功')

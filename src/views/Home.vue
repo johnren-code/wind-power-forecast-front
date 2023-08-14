@@ -10,7 +10,7 @@
                 <img src="../assets/images/demo/logo.png" alt="Doob Vue"/>
               </div>
               <h1 class="title display-two" data-aos="fade-up" data-aos-delay="100">
-                龙源风电管理与预测系统 <br/>
+                风能视界风电管理与预测系统 <br/>
                 <span class="theme-gradient">实时管理</span> &
                 <span class="theme-gradient">功率预测</span>
                 <br/>

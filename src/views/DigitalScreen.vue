@@ -16,7 +16,7 @@
             <div class="guang"></div>
             <div class="d-flex jc-center">
               <div class="title">
-                <span class="title-text">龙源风电运营管理平台</span>
+                <span class="title-text">风能视界风电运营管理平台</span>
               </div>
             </div>
             <div class="timers">
