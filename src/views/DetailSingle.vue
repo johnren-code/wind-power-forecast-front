@@ -44,13 +44,16 @@
     </div>
     <el-dialog :title="'历史报警信息'" :visible="historyWarningVisible"
                :before-close="handleHistoryWarningClose" class="dialog" top="23vh" :close-on-press-escape="false"
-               :close-on-click-modal="false" width="1050px">
+               :close-on-click-modal="false" width="80vw"
+               lock-scroll="false">
       <el-table
           :data="historyWarningData"
           stripe
+          height="450" 
           style="width: 100%"
           cell-style="text-align:center">
         <el-table-column
+            fixed
             prop="alarm_time"
             label="报警时间"
             width="180"
@@ -89,7 +92,7 @@
         <el-table-column
             prop="process_way"
             label="处理方式"
-            width="100"
+            width="260"
             header-align="center">
         </el-table-column>
         <el-table-column
@@ -108,13 +111,15 @@
 
     <el-dialog :title="'历史数据'" :visible="historyDataVisible"
                :before-close="handleHistoryDataClose" class="dialog" top="23vh" :close-on-press-escape="false"
-               :close-on-click-modal="false" width="1050px">
+               :close-on-click-modal="false" width="80vw" lock-scroll="false">
       <el-table
           :data="historyData"
           stripe
+          height="450" 
           style="width: 100%"
           cell-style="text-align:center">
         <el-table-column
+            fixed
             prop="time"
             label="时间"
             width="110"
@@ -506,39 +511,81 @@ export default {
 
 </script>
 <style lang='scss' scoped>
-.content-left {
-  color: #FFFFFF;
-  font-size: 20px;
-  width: 40%;
-  height: 350px;
-  margin-top: 50px;
-  /* 为其整体设置接近透明的效果*/
-  background-color: rgba(255, 255, 255, 0.05);
-  /* 设置box-shadow使其有立体感 */
-  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.2);
-  border: 1px solid transparent;
-  border-radius: 15px;
-  margin-left: 50px;
-  position: relative;
+
+// 屏幕大于 1100px 使用该样式
+@media screen and (min-width: 1100px){
+  .content-left {
+    color: #FFFFFF;
+    font-size: 20px;
+    width: 450px;
+    height: 370px;
+    margin-top: 50px;
+    /* 为其整体设置接近透明的效果*/
+    background-color: rgba(255, 255, 255, 0.05);
+    /* 设置box-shadow使其有立体感 */
+    box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+    border-radius: 15px;
+    margin-left: 50px;
+    position: relative;
+  }
+
+  .content-right {
+    color: #FFFFFF;
+    font-size: 20px;
+    margin-left: 10%;
+    height: 370px;
+    margin-top: 50px;
+    width: 450px;
+    background-color: rgba(255, 255, 255, 0.05);
+    /* 设置box-shadow使其有立体感 */
+    box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+    border-radius: 15px;
+    position: relative;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+  }
 }
 
-.content-right {
-  color: #FFFFFF;
-  font-size: 20px;
-  margin-left: 100px;
-  height: 350px;
-  margin-top: 50px;
-  width: 40%;
-  background-color: rgba(255, 255, 255, 0.05);
-  /* 设置box-shadow使其有立体感 */
-  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.2);
-  border: 1px solid transparent;
-  border-radius: 15px;
-  position: relative;
+@media screen and (max-width: 1100px) {
+    .content-left {
+    color: #FFFFFF;
+    font-size: 15px;
+    width: 80%;
+    height: 300px;
+    margin-top: 50px;
+    /* 为其整体设置接近透明的效果*/
+    background-color: rgba(255, 255, 255, 0.05);
+    /* 设置box-shadow使其有立体感 */
+    box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+    border-radius: 15px;
+    margin-left: 10%;
+    position: relative;
+  }
+
+  .content-right {
+    color: #FFFFFF;
+    font-size: 15px;
+    margin-left: 10%;
+    height: 300px;
+    margin-top: 20px;
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.05);
+    /* 设置box-shadow使其有立体感 */
+    box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent;
+    border-radius: 15px;
+    position: relative;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-.content {
-  display: flex;
-  flex-direction: row;
-}
+
 </style>

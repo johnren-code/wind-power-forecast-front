@@ -2,7 +2,8 @@
   <modal name="login-modal"
          :width="modalWidth"
          :height="modalHeight"
-         :adaptive="true">
+         :adaptive="true"
+         id="login-modal-id">
     <div class="login_form">
       <div class="login_form_left">
         <img src="../../assets/images/logo/logo.png" alt="Doob Vue" style="display: inline-block;"/>
@@ -432,9 +433,14 @@ export default {
       // this.loginData.email=''
       this.loginData.writeCode = '' //需要清空验证码
     },
-    updateWindowSize() {
+     updateWindowSize() {
       this.windowSize.width = window.innerWidth;
       this.windowSize.height = window.innerHeight;
+    },
+    updateModalSize() {
+      this.modalWidth = window.innerWidth*0.8;
+      this.modalHeight = window.innerHeight*0.8;
+      console.log(this.modalWidth);
     },
   },
   mounted() {
@@ -443,6 +449,7 @@ export default {
     this.makeCode(this.identifyCodes, 4);
     this.updateWindowSize();
     window.addEventListener('resize', this.updateWindowSize);
+    window.addEventListener('resize', this.updateModalSize);
   },
   computed: {
     modalWidth() {
@@ -454,41 +461,70 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.updateWindowSize);
+    window.removeEventListener('resize', this.updateModalSize);
   },
 }
 </script>
 
+
 <style scoped>
+
 .login_form {
   height: 100%;
-  width: 800px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   /* background:rgba(64,141,229,0.1); */
 }
 
-.login_form_left {
-  width: 300px;
-  height: 100%;
-  padding: 50px;
-  opacity: 1;
-  background-color: #008FD5;
-  background: -webkit-linear-gradient(left top, #211013, #0B2F41); /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(bottom right, #211013, #0B2F41); /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(bottom right, #211013, #0B2F41); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to bottom right, #211013, #0B2F41); /* 标准的语法 */
+@media screen and (min-width: 700px) {
+  .login_form_left {
+    width: 300px;
+    height: 100%;
+    padding: 50px;
+    opacity: 1;
+    background-color: #008FD5;
+    background: -webkit-linear-gradient(left top, #211013, #0B2F41); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #211013, #0B2F41); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #211013, #0B2F41); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #211013, #0B2F41); /* 标准的语法 */
+  }
+  .login_form_right {
+    width: 500px;
+    height: 100%;
+    margin-left: 1px;
+    padding: 50px;
+    opacity: 1;
+    background: -webkit-linear-gradient(left top, #211013, #0B2F41); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #211013, #0B2F41); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #211013, #0B2F41); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #211013, #0B2F41); /* 标准的语法 */
+  }
 }
-
-.login_form_right {
-  width: 500px;
-  height: 100%;
-  margin-left: 1px;
-  padding: 50px;
-  opacity: 1;
-  background: -webkit-linear-gradient(left top, #211013, #0B2F41); /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(bottom right, #211013, #0B2F41); /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(bottom right, #211013, #0B2F41); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to bottom right, #211013, #0B2F41); /* 标准的语法 */
+@media screen and (max-width: 700px) {
+  .login_form_left {
+    width: 300px;
+    height: 100%;
+    padding: 50px;
+    opacity: 1;
+    background-color: #008FD5;
+    background: -webkit-linear-gradient(left top, #211013, #0B2F41); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #211013, #0B2F41); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #211013, #0B2F41); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #211013, #0B2F41); /* 标准的语法 */
+    display: none;
+  }
+  .login_form_right {
+    width: 100%;
+    height: 100%;
+    margin-left: 1px;
+    padding: 50px;
+    opacity: 1;
+    background: -webkit-linear-gradient(left top, #211013, #0B2F41); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #211013, #0B2F41); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #211013, #0B2F41); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #211013, #0B2F41); /* 标准的语法 */
+  }
 }
 
 .verify-code {

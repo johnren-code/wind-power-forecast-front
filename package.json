@@ -18,6 +18,7 @@
     "echarts-gl": "^2.0.9",
     "element-ui": "^2.15.10",
     "feather-icons": "^4.28.0",
+    "jquery": "^3.7.0",
     "sass": "^1.45.2",
     "vue": "^2.6.11",
     "vue-awesome": "^4.5.0",

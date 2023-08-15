@@ -13,7 +13,7 @@
         </el-menu-item>
         <el-menu-item index="/pred/management">
           <el-button type="text">
-            <i class="iconfont icon-fengji">风场管理</i></el-button>
+            <i class="iconfont icon-fengji wind-management">风场管理</i></el-button>
         </el-menu-item>
         <el-menu-item :index="'/pred/' + item.farmId" v-for="item in tableData"
                       @click="savePath(item.farmId)">
@@ -93,5 +93,9 @@ export default {
   left: 20px; */
   background-color: #202123;
   border: none;
+}
+.wind-management {
+  color: #ffffff;  /* 这是字体颜色，你可以更改为你想要的颜色 */
+  padding-left: 10px; /* 这是<i>标签和文字之间的距离，你可以更改为你想要的距离 */
 }
 </style>

@@ -8,14 +8,14 @@
         <div>
           <el-form direction="vertical" :label-position="labelPosition" label-width="80px" :model="formLabelAlign"
                    style="color: #ffffff">
-            <el-row :gutter="24" style="margin-left: 150px">
+            <el-row :gutter="24" style="margin-left: 10%">
               <el-col :span="8">
                 <el-form-item label="风电场ID">
-                  <el-input v-model="farmId" style="width: 70%;"></el-input>
+                  <el-input v-model="farmId" style="width: 90%;"></el-input>
                 </el-form-item>
                 <el-form-item label="运行状态">
 <!--                  <el-input v-model="farmId" style="width: 70%;"></el-input>-->
-                  <el-select v-model="stateValue" placeholder="请选择" style="width: 70%;">
+                  <el-select v-model="stateValue" placeholder="请选择" style="width: 90%;">
                     <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -25,7 +25,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="故障原因">
-                  <el-input v-model="description" style="width: 70%;"></el-input>
+                  <el-input v-model="description" style="width: 90%;"></el-input>
                 </el-form-item>
               </el-col>
 <!--              <el-col :span="8">-->
@@ -131,8 +131,6 @@ export default {
     reset() {
       this.uploadFileUrl = ''
       this.farmId = ''
-      this.stateValue=''
-      this.description=''
     }
   }
 }
@@ -140,6 +138,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+::v-deep .el-upload{
+  width: 80%;
+  height: 25vh;
+}
+::v-deep .el-upload .el-upload-dragger{
+  width: 80%;
+  height: 25vh;
+}
+
 .projname {
   width: 400px;
 }

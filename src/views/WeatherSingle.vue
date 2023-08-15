@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="charts">
     <div id="echart-graph-weather" class="echarts-chart-weather"></div>
+    <div id="echart-graph-weather-back" class="echarts-chart-weather"></div>
   </div>
 </template>
 
@@ -14,22 +15,329 @@ import Menu from "@/components/menu/Menu";
 import * as echarts from 'echarts';
 import SectionTitle from "@/components/elements/sectionTitle/SectionTitle";
 import JsonExcel from 'vue-json-excel'
+import $ from 'jquery'
 
 export default {
   name: 'PowerPred',
   components: {Layout, Button, Menu, SectionTitle, 'download-excel': JsonExcel},
   data() {
-    return {
-
-    };
+    return {};
   },
   watch: {
     '$route.params.id': async function (to, from) {
       // 清空数据
-      axios.get('/flask/weather').then(res=>{
+      axios.get('/flask/weather').then(res => {
         console.log(res)
         var chartWeather = echarts.init(document.getElementById('echart-graph-weather'), 'dark', {renderer: 'canvas'});
         chartWeather.setOption(res)
+        window.addEventListener('resize', function () {
+          chartWeather.resize();
+        });
+      })
+      axios.post('/api/windFarmUrl/getByFarmId', {
+        farmId: this.$route.params.id
+      }).then(res => {
+        console.log('res',res)
+        axios.post(
+            '/flask/weather_pred', {
+              path:'http://124.220.56.38:8888'+res.data.originFileUrl.substring(1)
+            }).then(rawData => {
+              const weatherIcons = {
+                Showers: '/flask/static/showers_128.png',
+                Sunny: '/flask/static/sunny_128.png',
+                Cloudy: '/flask/static/cloudy_128.png'
+              };
+              const directionMap = {};
+              // prettier-ignore
+              ['W', 'WSW', 'SW', 'SSW', 'S', 'SSE', 'SE', 'ESE', 'E', 'ENE', 'NE', 'NNE', 'N', 'NNW', 'NW', 'WNW'].forEach(function (name, index) {
+                directionMap[name] = Math.PI / 8 * index;
+              });
+              const data = rawData.data.map(function (entry) {
+                return [entry.time, entry.windSpeed, entry.R, entry.waveHeight];
+              });
+              const weatherData = rawData.forecast.map(function (entry) {
+                return [
+                  entry.localDate,
+                  0,
+                  weatherIcons[entry.skyIcon],
+                  entry.minTemp,
+                  entry.maxTemp
+                ];
+              });
+              const dims = {
+                time: 0,
+                windSpeed: 1,
+                R: 2,
+                waveHeight: 3,
+                weatherIcon: 2,
+                minTemp: 3,
+                maxTemp: 4
+              };
+              const arrowSize = 18;
+              const weatherIconSize = 45;
+              const renderArrow = function (param, api) {
+                const point = api.coord([
+                  api.value(dims.time),
+                  api.value(dims.windSpeed)
+                ]);
+                return {
+                  type: 'path',
+                  shape: {
+                    pathData: 'M31 16l-15-15v9h-26v12h26v9z',
+                    x: -arrowSize / 2,
+                    y: -arrowSize / 2,
+                    width: arrowSize,
+                    height: arrowSize
+                  },
+                  rotation: (api.value(dims.R) * Math.PI) / 180,
+                  position: point,
+                  style: api.style({
+                    stroke: '#555',
+                    lineWidth: 1
+                  })
+                };
+              };
+              const renderWeather = function (param, api) {
+                const point = api.coord([
+                  api.value(dims.time) + (3600 * 24 * 1000) / 2,
+                  0
+                ]);
+                return {
+                  type: 'group',
+                  children: [
+                    {
+                      type: 'image',
+                      style: {
+                        image: api.value(dims.weatherIcon),
+                        x: -weatherIconSize / 2,
+                        y: -weatherIconSize / 2,
+                        width: weatherIconSize,
+                        height: weatherIconSize
+                      },
+                      position: [point[0], 110]
+                    },
+                    {
+                      type: 'text',
+                      style: {
+                        text:
+                            api.value(dims.minTemp) + ' - ' + api.value(dims.maxTemp) + '°',
+                        textFont: api.font({fontSize: 14}),
+                        textAlign: 'center',
+                        textVerticalAlign: 'bottom'
+                      },
+                      position: [point[0], 80]
+                    }
+                  ]
+                };
+              };
+              var option = {
+                title: {
+                  text: '天气 风向 风速 湿度 预报',
+                  left: 'center'
+                },
+                tooltip: {
+                  trigger: 'axis',
+                  formatter: function (params) {
+                    return [
+                      echarts.format.formatTime(
+                          'yyyy-MM-dd',
+                          params[0].value[dims.time]
+                      ) +
+                      ' ' +
+                      echarts.format.formatTime('hh:mm', params[0].value[dims.time]),
+                      '风速：' + params[0].value[dims.windSpeed],
+                      '风向：' + params[0].value[dims.R],
+                      '湿度：' + params[0].value[dims.waveHeight]
+                    ].join('<br>');
+                  }
+                },
+                grid: {
+                  top: 160,
+                  bottom: 125
+                },
+                xAxis: {
+                  type: 'time',
+                  maxInterval: 3600 * 1000 * 24,
+                  splitLine: {
+                    lineStyle: {
+                      color: '#ddd'
+                    }
+                  }
+                },
+                yAxis: [
+                  {
+                    name: '风速（m/s）',
+                    nameLocation: 'middle',
+                    nameGap: 35,
+                    axisLine: {
+                      lineStyle: {
+                        color: '#666'
+                      }
+                    },
+                    splitLine: {
+                      lineStyle: {
+                        color: '#ddd'
+                      }
+                    }
+                  },
+                  {
+                    name: '湿度（%）',
+                    nameLocation: 'middle',
+                    nameGap: 35,
+                    max: 100,
+                    axisLine: {
+                      lineStyle: {
+                        color: '#015DD5'
+                      }
+                    },
+                    splitLine: {show: false}
+                  },
+                  {
+                    axisLine: {show: false},
+                    axisTick: {show: false},
+                    axisLabel: {show: false},
+                    splitLine: {show: false}
+                  }
+                ],
+                visualMap: {
+                  type: 'piecewise',
+                  // show: false,
+                  orient: 'horizontal',
+                  left: 'center',
+                  bottom: 10,
+                  pieces: [
+                    {
+                      gte: 10,
+                      color: '#18BF12',
+                      label: '大风（>=10m/s）'
+                    },
+                    {
+                      gte: 5,
+                      lt: 10,
+                      color: '#f4e9a3',
+                      label: '中风（5  ~ 10 m/s）'
+                    },
+                    {
+                      lt: 5,
+                      color: '#D33C3E',
+                      label: '微风（小于 4 m/s）'
+                    }
+                  ],
+                  seriesIndex: 1,
+                  dimension: 1
+                },
+                dataZoom: [
+                  {
+                    type: 'inside',
+                    xAxisIndex: 0,
+                    minSpan: 5
+                  },
+                  {
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    minSpan: 5,
+                    bottom: 50
+                  }
+                ],
+                series: [
+                  {
+                    type: 'line',
+                    yAxisIndex: 1,
+                    showSymbol: false,
+                    emphasis: {
+                      scale: false
+                    },
+                    symbolSize: 10,
+                    areaStyle: {
+                      color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        global: false,
+                        colorStops: [
+                          {
+                            offset: 0,
+                            color: 'rgba(88,160,253,1)'
+                          },
+                          {
+                            offset: 0.5,
+                            color: 'rgba(88,160,253,0.7)'
+                          },
+                          {
+                            offset: 1,
+                            color: 'rgba(88,160,253,0)'
+                          }
+                        ]
+                      }
+                    },
+                    lineStyle: {
+                      color: 'rgba(88,160,253,1)'
+                    },
+                    itemStyle: {
+                      color: 'rgba(88,160,253,1)'
+                    },
+                    encode: {
+                      x: dims.time,
+                      y: dims.waveHeight
+                    },
+                    data: data,
+                    z: 2
+                  },
+                  {
+                    type: 'custom',
+                    renderItem: renderArrow,
+                    encode: {
+                      x: dims.time,
+                      y: dims.windSpeed
+                    },
+                    data: data,
+                    z: 10
+                  },
+                  {
+                    type: 'line',
+                    symbol: 'none',
+                    encode: {
+                      x: dims.time,
+                      y: dims.windSpeed
+                    },
+                    lineStyle: {
+                      color: '#aaa',
+                      type: 'dotted'
+                    },
+                    data: data,
+                    z: 1
+                  },
+                  {
+                    type: 'custom',
+                    renderItem: renderWeather,
+                    data: weatherData,
+                    tooltip: {
+                      trigger: 'item',
+                      formatter: function (param) {
+                        return (
+                            param.value[dims.time] +
+                            ': ' +
+                            param.value[dims.minTemp] +
+                            ' - ' +
+                            param.value[dims.maxTemp] +
+                            '°'
+                        );
+                      }
+                    },
+                    yAxisIndex: 2,
+                    z: 11
+                  }
+                ]
+              };
+              var chartWeatherBack = echarts.init(document.getElementById('echart-graph-weather-back'), 'dark', {renderer: 'canvas'});
+              chartWeatherBack.setOption(option)
+              window.addEventListener('resize', function () {
+                chartWeatherBack.resize();
+              });
+            }
+        );
       })
     },
   },
@@ -37,274 +345,343 @@ export default {
 
   },
   mounted() {
-    axios.get('/flask/weather').then(res=>{
+    axios.get('/flask/weather').then(res => {
       console.log(res)
+      var chartWeather = echarts.init(document.getElementById('echart-graph-weather'), 'dark', {renderer: 'canvas'});
+      chartWeather.setOption(res)
+      window.addEventListener('resize', function () {
+        chartWeather.resize();
+      });
     })
+      axios.post(
+          '/flask/weather_pred', {
+            path:'http://124.220.56.38:8888//file/202307/-06fa9f42df1c4db2af5958cdb773a8d4.csv'
+          }).then(rawData => {
+            const weatherIcons = {
+              Showers: '/flask/static/showers_128.png',
+              Sunny: '/flask/static/sunny_128.png',
+              Cloudy: '/flask/static/cloudy_128.png'
+            };
+            const directionMap = {};
+            // prettier-ignore
+            ['W', 'WSW', 'SW', 'SSW', 'S', 'SSE', 'SE', 'ESE', 'E', 'ENE', 'NE', 'NNE', 'N', 'NNW', 'NW', 'WNW'].forEach(function (name, index) {
+              directionMap[name] = Math.PI / 8 * index;
+            });
+            const data = rawData.data.map(function (entry) {
+              return [entry.time, entry.windSpeed, entry.R, entry.waveHeight];
+            });
+            const weatherData = rawData.forecast.map(function (entry) {
+              return [
+                entry.localDate,
+                0,
+                weatherIcons[entry.skyIcon],
+                entry.minTemp,
+                entry.maxTemp
+              ];
+            });
+            const dims = {
+              time: 0,
+              windSpeed: 1,
+              R: 2,
+              waveHeight: 3,
+              weatherIcon: 2,
+              minTemp: 3,
+              maxTemp: 4
+            };
+            const arrowSize = 18;
+            const weatherIconSize = 45;
+            const renderArrow = function (param, api) {
+              const point = api.coord([
+                api.value(dims.time),
+                api.value(dims.windSpeed)
+              ]);
+              return {
+                type: 'path',
+                shape: {
+                  pathData: 'M31 16l-15-15v9h-26v12h26v9z',
+                  x: -arrowSize / 2,
+                  y: -arrowSize / 2,
+                  width: arrowSize,
+                  height: arrowSize
+                },
+                rotation: (api.value(dims.R) * Math.PI) / 180,
+                position: point,
+                style: api.style({
+                  stroke: '#555',
+                  lineWidth: 1
+                })
+              };
+            };
+            const renderWeather = function (param, api) {
+              const point = api.coord([
+                api.value(dims.time) + (3600 * 24 * 1000) / 2,
+                0
+              ]);
+              return {
+                type: 'group',
+                children: [
+                  {
+                    type: 'image',
+                    style: {
+                      image: api.value(dims.weatherIcon),
+                      x: -weatherIconSize / 2,
+                      y: -weatherIconSize / 2,
+                      width: weatherIconSize,
+                      height: weatherIconSize
+                    },
+                    position: [point[0], 110]
+                  },
+                  {
+                    type: 'text',
+                    style: {
+                      text:
+                          api.value(dims.minTemp) + ' - ' + api.value(dims.maxTemp) + '°',
+                      textFont: api.font({fontSize: 14}),
+                      textAlign: 'center',
+                      textVerticalAlign: 'bottom'
+                    },
+                    position: [point[0], 80]
+                  }
+                ]
+              };
+            };
+            var option = {
+              title: {
+                text: '天气 风向 风速 湿度 预报',
+                left: 'center'
+              },
+              tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                  return [
+                    echarts.format.formatTime(
+                        'yyyy-MM-dd',
+                        params[0].value[dims.time]
+                    ) +
+                    ' ' +
+                    echarts.format.formatTime('hh:mm', params[0].value[dims.time]),
+                    '风速：' + params[0].value[dims.windSpeed],
+                    '风向：' + params[0].value[dims.R],
+                    '湿度：' + params[0].value[dims.waveHeight]
+                  ].join('<br>');
+                }
+              },
+              grid: {
+                top: 160,
+                bottom: 125
+              },
+              xAxis: {
+                type: 'time',
+                maxInterval: 3600 * 1000 * 24,
+                splitLine: {
+                  lineStyle: {
+                    color: '#ddd'
+                  }
+                }
+              },
+              yAxis: [
+                {
+                  name: '风速（m/s）',
+                  nameLocation: 'middle',
+                  nameGap: 35,
+                  axisLine: {
+                    lineStyle: {
+                      color: '#666'
+                    }
+                  },
+                  splitLine: {
+                    lineStyle: {
+                      color: '#ddd'
+                    }
+                  }
+                },
+                {
+                  name: '湿度（%）',
+                  nameLocation: 'middle',
+                  nameGap: 35,
+                  max: 100,
+                  axisLine: {
+                    lineStyle: {
+                      color: '#015DD5'
+                    }
+                  },
+                  splitLine: {show: false}
+                },
+                {
+                  axisLine: {show: false},
+                  axisTick: {show: false},
+                  axisLabel: {show: false},
+                  splitLine: {show: false}
+                }
+              ],
+              visualMap: {
+                type: 'piecewise',
+                // show: false,
+                orient: 'horizontal',
+                left: 'center',
+                bottom: 10,
+                pieces: [
+                  {
+                    gte: 10,
+                    color: '#18BF12',
+                    label: '大风（>=10m/s）'
+                  },
+                  {
+                    gte: 5,
+                    lt: 10,
+                    color: '#f4e9a3',
+                    label: '中风（5  ~ 10 m/s）'
+                  },
+                  {
+                    lt: 5,
+                    color: '#D33C3E',
+                    label: '微风（小于 4 m/s）'
+                  }
+                ],
+                seriesIndex: 1,
+                dimension: 1
+              },
+              dataZoom: [
+                {
+                  type: 'inside',
+                  xAxisIndex: 0,
+                  minSpan: 5
+                },
+                {
+                  type: 'slider',
+                  xAxisIndex: 0,
+                  minSpan: 5,
+                  bottom: 50
+                }
+              ],
+              series: [
+                {
+                  type: 'line',
+                  yAxisIndex: 1,
+                  showSymbol: false,
+                  emphasis: {
+                    scale: false
+                  },
+                  symbolSize: 10,
+                  areaStyle: {
+                    color: {
+                      type: 'linear',
+                      x: 0,
+                      y: 0,
+                      x2: 0,
+                      y2: 1,
+                      global: false,
+                      colorStops: [
+                        {
+                          offset: 0,
+                          color: 'rgba(88,160,253,1)'
+                        },
+                        {
+                          offset: 0.5,
+                          color: 'rgba(88,160,253,0.7)'
+                        },
+                        {
+                          offset: 1,
+                          color: 'rgba(88,160,253,0)'
+                        }
+                      ]
+                    }
+                  },
+                  lineStyle: {
+                    color: 'rgba(88,160,253,1)'
+                  },
+                  itemStyle: {
+                    color: 'rgba(88,160,253,1)'
+                  },
+                  encode: {
+                    x: dims.time,
+                    y: dims.waveHeight
+                  },
+                  data: data,
+                  z: 2
+                },
+                {
+                  type: 'custom',
+                  renderItem: renderArrow,
+                  encode: {
+                    x: dims.time,
+                    y: dims.windSpeed
+                  },
+                  data: data,
+                  z: 10
+                },
+                {
+                  type: 'line',
+                  symbol: 'none',
+                  encode: {
+                    x: dims.time,
+                    y: dims.windSpeed
+                  },
+                  lineStyle: {
+                    color: '#aaa',
+                    type: 'dotted'
+                  },
+                  data: data,
+                  z: 1
+                },
+                {
+                  type: 'custom',
+                  renderItem: renderWeather,
+                  data: weatherData,
+                  tooltip: {
+                    trigger: 'item',
+                    formatter: function (param) {
+                      return (
+                          param.value[dims.time] +
+                          ': ' +
+                          param.value[dims.minTemp] +
+                          ' - ' +
+                          param.value[dims.maxTemp] +
+                          '°'
+                      );
+                    }
+                  },
+                  yAxisIndex: 2,
+                  z: 11
+                }
+              ]
+            };
+            var chartWeatherBack = echarts.init(document.getElementById('echart-graph-weather-back'), 'dark', {renderer: 'canvas'});
+            chartWeatherBack.setOption(option)
+            window.addEventListener('resize', function () {
+              chartWeatherBack.resize();
+            });
+          }
+      );
   },
-  beforeDestroy() {
-    // 组件销毁时移除事件监听器，避免内存泄漏
-    window.removeEventListener('resize', this.handleResize);
-  },
-  methods: {
-    showTableChart(){
-      this.tableVisible = true
-      this.$nextTick(() => {
-        var chartScatter = echarts.init(document.getElementById('echart-graph-scatter'), 'dark', {renderer: 'canvas'});
-        chartScatter.setOption(this.scatterData)
-      })
-    },
-    handleTableClose(){
-      this.tableVisible = false
-    },
-    showScatterChart(){
-      this.scatterVisible = true
-      this.$nextTick(() => {
-        var chartScatter = echarts.init(document.getElementById('echart-graph-scatter'), 'dark', {renderer: 'canvas'});
-        chartScatter.setOption(this.scatterData)
-      })
-    },
-    handleBarClose(){
-      this.barVisible = false
-    },
-    handleScatterClose(){
-      this.scatterVisible = false
-    },
-    showBarChart(){
-      this.barVisible = true
-      this.$nextTick(() => {
-        var chartBar = echarts.init(document.getElementById('echart-graph-bar'), 'dark', {renderer: 'canvas'});
-        chartBar.setOption(this.barData)
-      })
-    },
-    handleResize() {
-      if (this.myChart) {
-        this.myChart.resize();
-      }
-    },
-    startDownload() {
-      console.log('导出前')
-      var timeList = []
-      var realPowerList = []
-      var predPowerList = []
-      var tempList = this.currentPredPowerList
-      var tempTotalList = this.totalPowerList
-      console.log('this.totalPowerList',this.totalPowerList)
-      for (var i = 0; i < tempList.length; i++) {
-        timeList.push(tempList[i][0])
-        predPowerList.push(tempList[i][1])
-      }
-      for (var i = 0; i < tempTotalList.length; i++) {
-        if (tempTotalList[i].DATATIME.replace("T", " ") === timeList[0]) {
-          for (var j = 0; j < tempList.length; j++) {
-            realPowerList.push(tempTotalList[i + j].YD15)
-          }
-          break;
-        }
-      }
-      for (var i = 0; i < timeList.length; i++) {
-        this.mytable.push({
-          time: timeList[i],
-          realPower: realPowerList[i],
-          predPower: predPowerList[i]
-        })
-      }
-    },
-    finishDownload() {
-      this.$message.success('导出成功')
-    },
-    async initChart(to) {
-      this.showContent = false
-      this.loading = true
-      this.processUr = ''
-      this.isFarmData = false
-      if (this.intervalId) {
-        clearInterval(this.intervalId);
-        this.intervalId = null;
-      }
-      this.mytable = []
-      this.totalPowerList = []
-      this.currentPowerList = []
-      this.currentPredPowerList = []
-      if (this.myChart != null) {
-        this.myChart.dispose();
-      }
-      this.chartOption = null;
-      this.myChart = null;
-      console.log(to);
-      this.farmId = to
-      var powerList
-      await axios.post('/flask/getFarmData', {
-        farmId: to
-      }).then(res => {
-        if (res.status) {
-          this.showContent = true
-          this.isFarmData = true
-          powerList = res.data
-          this.totalPowerList = res.data
-          this.processUrl = res.full_url
-          console.log('powerList', powerList.length)
-          console.log(res)
-        } else {
-          this.showContent = true
-        }
-      })
-      this.loading = false
-      // await axios.get('/api/windFarm/getFarmDataById', {
-      //   params: {
-      //     farm_id: to
-      //   }
-      // }).then(res => {
-      //   powerList = res.data
-      //   this.totalPowerList = res.data
-      //   console.log('powerList', powerList.length)
-      //   console.log(res)
-      // })
-      let halfPowerList = powerList.slice(0, Math.floor(powerList.length / 10));
-      this.currentPowerList = halfPowerList
-      this.lastIndex = halfPowerList.length - 1;
-      console.log('powerList', powerList)
-      let data = halfPowerList.map(datum => {
-        return [+new Date(datum.DATATIME), datum.YD15];
-      });
-      // var chartDom = document.getElementById('echart-graph');
-      // var myChart = echarts.init(chartDom, 'dark');
-      this.myChart = echarts.init(document.getElementById('echart-graph'), 'dark');
-      // var option;
-      this.chartOption = {
-        legend: {
-          left: 'left',
-          top: 'top',
-          data: ['真实功率', '预测功率', '误差']  // 数据项的名字需要与 series 中对应项的 name 一致
-        },
-        tooltip: {
-          trigger: 'axis',
-          position: function (pt) {
-            return [pt[0], '10%'];
-          }
-        },
-        title: {
-          left: 'center',
-          text: '功率-时间图像'
-        },
-        toolbox: {
-          feature: {
-            dataZoom: {
-              yAxisIndex: 'none'
-            },
-            restore: {},
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          type: 'time',
-          boundaryGap: false
-        },
-        yAxis: {
-          type: 'value',
-          boundaryGap: [0, '100%']
-        },
-        dataZoom: [
-          {
-            type: 'inside',
-            start: 0,
-            end: 100
-          },
-          {
-            start: 0,
-            end: 100
-          }
-        ],
-        series: [
-          {
-            name: '真实功率',
-            type: 'line',
-            smooth: true,
-            symbol: 'none',
-            data: data
-          }
-        ]
-      };
-      this.myChart.setOption(this.chartOption)
-      window.addEventListener('resize', this.handleResize);
-    },
-    concatenateDateTime() {
-      if (this.startDate && this.startTime) {
-        let d = new Date(this.startDate);
-        let year = d.getFullYear();
-        let month = ("0" + (d.getMonth() + 1)).slice(-2); // Months are 0 based so add 1 and slice last 2 digits
-        let date = ("0" + d.getDate()).slice(-2);
-        let formattedDate = `${year}-${month}-${date}`;
-        return `${formattedDate} ${this.startTime}:00`;
-      } else {
-        return '';
-      }
-    },
-    moveToDataProcess() {
-      let text = this.$router.resolve({
-        path: `/dataProcess/${this.$route.params.id}`
-      });
-      // 打开一个新的页面
-      window.open(text.href, '_blank')
-    },
-
-    queryPower() {
-      if (!this.startDate || !this.startTime || !this.daysValue || !this.predDays) {
-        this.$message.error('请选择完整的预测所需要的信息')
-      } else {
-        axios.post('/flask/pred', {
-          file: this.processUrl,
-          tid: this.farmId,
-          start: this.concatenateDateTime(),
-          input: this.daysValue,
-          output: this.predDays
-        }).then(res => {
-          console.log(res)
-          let timeData = res.time_list
-          let powerData = res.pred_list
-          this.barData = res.bar
-          this.scatterData = res.scatter;
-          var tempJsonData = res.table_json
-          console.log(tempJsonData.sz[0])
-          var tempTableData = []
-          for(var i=0;i<5;i++){
-            tempTableData.push({
-              pd:(tempJsonData.pd)[i],
-              sz:(tempJsonData.sz)[i],
-              zb:(tempJsonData.zb)[i],
-            })
-          }
-          this.tableJsonData = tempTableData
-          console.log(this.tableJsonData)
-          // this.tableJsonData.push({
-          //   zb:{
-          //
-          //   }
-          // })
-          let chartData = timeData.map((time, index) => [time, powerData[index]]);
-          var predSeries = {
-            name: '预测功率',
-            type: 'line',
-            smooth: true,
-            symbol: 'none',
-            data: chartData
-          };
-          this.chartOption.series.push(predSeries);
-          this.myChart.setOption(this.chartOption);
-
-        })
-        const datetime = this.concatenateDateTime();
-        console.log(datetime);
-      }
-    }
-  },
+  methods: {},
 }
 
 </script>
 <style lang='scss' scoped>
-.echarts-chart-weather {
-  display: inline-block;
-  height: 600px;
-  width: 1000px;
-  margin: 50px;
+
+
+@media screen and (min-width: 1100px){
+  .echarts-chart-weather {
+    height: 60vh;
+    width: 35vw;
+    margin: 5vh;
+  }
+  .charts {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@media screen and (max-width: 1100px){
+  .echarts-chart-weather {
+    height: 60vh;
+    width: 50vw;
+    margin: 5vh;
+  }
+  .charts {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

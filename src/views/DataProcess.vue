@@ -21,7 +21,7 @@
                   <el-button type="primary">重新上传文件</el-button>
                 </el-upload>
                 <div>
-                  <span style="color: #d3d6dd;margin-top: 10px" >数据可视化：</span>
+                  <span style="color: #d3d6dd;margin-top: 10px">数据可视化：</span>
                   <el-button type="primary" round @click="showMissInfo" style="margin-top: 10px">
                     <i class="iconfont icon-butongguo_cailiaoqueshi">缺失值统计</i>
                   </el-button>
@@ -29,10 +29,10 @@
                     <i class="iconfont icon-shujumiaoshuxingtongji">描述性统计</i>
                   </el-button>
                   <el-button type="primary" round @click="showBoxPlot" style="margin-top: 10px">
-                    <i class="iconfont icon-hexutu">盒须图</i>
+                    <i class="iconfont icon-hexutu">离群值分析</i>
                   </el-button>
                   <el-button type="primary" round @click="showCorrelation" style="margin-top: 10px">
-                    <i class="iconfont icon-juxingrelitu">热力图</i>
+                    <i class="iconfont icon-juxingrelitu">相关性分析</i>
                   </el-button>
                   <el-button type="primary" round @click="showScatter2dDialog" style="margin-top: 10px">
                     <i class="iconfont icon-sandiantu">二维散点图</i>
@@ -42,8 +42,6 @@
                   </el-button>
                 </div>
               </div>
-              <!--              <div id="echart-graph-descriptive" class="echarts-chart-descriptive"></div>-->
-              <!--              <div id="echart-graph-correlation" class="echarts-chart-correlation"></div>-->
               <div>
                 <span style="color: #d3d6dd;margin-top: 10px">数据预处理：</span>
                 <el-select v-model="beforeImpute" placeholder="请选择检测前的填充算法" style="margin-top: 10px">
@@ -72,20 +70,22 @@
                 </el-select>
                 <el-button type="primary" round @click="doDataProcess" style="margin-top: 10px">点击进行数据处理</el-button>
                 <el-button type="primary" round @click="saveProcessFile" style="margin-top: 10px">保存下载</el-button>
-                <div id="echart-graph-beforeImpute" class="echarts-chart"></div>
-                <div id="echart-graph-afterImpute" class="echarts-chart"></div>
+                <div class="charts">
+                  <div id="echart-graph-beforeImpute" class="echarts-chart"></div>
+                  <div id="echart-graph-afterImpute" class="echarts-chart"></div>
+                </div>
               </div>
             </div>
           </div>
           <el-dialog :title="'缺失值统计'" :visible="missInfoVisible"
                      :before-close="handleMissInfoClose" class="dialog" top="23vh" :close-on-press-escape="false"
-                     :close-on-click-modal="false" width="750px">
+                     :close-on-click-modal="false" lock-scroll="false">
             <div id="echart-graph-missinfo" class="echarts-chart-missinfo"></div>
           </el-dialog>
 
           <el-dialog :title="'描述性统计'" :visible="descriptiveVisible"
                      :before-close="handleDescriptiveClose" class="dialog" top="23vh" :close-on-press-escape="false"
-                     :close-on-click-modal="false" width="1050px">
+                     :close-on-click-modal="false" lock-scroll="false">
             <el-table
                 :data="descriptiveTableData"
                 stripe
@@ -156,20 +156,20 @@
 
           <el-dialog :title="'盒须图'" :visible="boxPlotVisible"
                      :before-close="handleBoxPlotClose" class="dialog" top="23vh" :close-on-press-escape="false"
-                     :close-on-click-modal="false" width="1100px">
+                     :close-on-click-modal="false" lock-scroll="false">
 
             <div id="echart-graph-boxplot" class="echarts-chart-boxplot"></div>
           </el-dialog>
 
           <el-dialog :title="'相关性热力图'" :visible="correlationVisible"
                      :before-close="handleCorrelationClose" class="dialog" top="23vh" :close-on-press-escape="false"
-                     :close-on-click-modal="false" width="850px">
+                     :close-on-click-modal="false" lock-scroll="false">
             <div id="echart-graph-correlation" class="echarts-chart-correlation"></div>
           </el-dialog>
 
           <el-dialog :title="'二维散点图'" :visible="scatter2dVisible"
                      :before-close="handleScatter2dClose" class="dialog" top="23vh" :close-on-press-escape="false"
-                     :close-on-click-modal="false" width="750px">
+                     :close-on-click-modal="false" lock-scroll="false">
             <el-select v-model="xValue" placeholder="请选择特征1">
               <el-option
                   v-for="item in xyOptions"
@@ -192,7 +192,7 @@
 
           <el-dialog :title="'三维散点图'" :visible="scatter3dVisible"
                      :before-close="handleScatter3dClose" class="dialog" top="23vh" :close-on-press-escape="false"
-                     :close-on-click-modal="false" width="750px">
+                     :close-on-click-modal="false" lock-scroll="false">
             <el-select v-model="xValue" placeholder="请选择特征1" style="width: 25%;">
               <el-option
                   v-for="item in xyOptions"
@@ -296,30 +296,30 @@ export default {
       }],
       beforeImputeOptions: [{
         value: 'KNN',
-        label: 'KNN'
+        label: 'KNN（K近邻算法）'
       }, {
         value: 'KNN_RF',
-        label: 'KNN_RF'
+        label: 'KNN_RF（K近邻结合随机森林回归）'
       }],
       detectionOptions: [{
         value: 'IF',
-        label: 'IF'
+        label: 'IF（孤立森林检测算法）'
       }, {
         value: 'LOF',
-        label: 'LOF'
+        label: 'LOF（局部离群因子）'
       }, {
         value: 'EllipticEnvelope',
-        label: 'EllipticEnvelope'
+        label: 'EE（椭圆包络检测算法）'
       }, {
         value: 'SVM',
-        label: 'SVM'
+        label: 'SVM（支持向量机算法）'
       }],
       afterImputeOptions: [{
         value: 'KNN',
-        label: 'KNN'
+        label: 'KNN（K近邻算法）'
       }, {
         value: 'RF',
-        label: 'RF'
+        label: 'RF（随机森林回归算法）'
       }],
       xValue: '',
       yValue: '',
@@ -328,9 +328,9 @@ export default {
       detection: '',
       afterImpute: '',
       currentProcessUrl: '',
-      descriptiveVisible:false,
-      descriptiveTableUrl:'',
-      descriptiveTableData:{},
+      descriptiveVisible: false,
+      descriptiveTableUrl: '',
+      descriptiveTableData: {},
     };
   },
   created() {
@@ -342,15 +342,15 @@ export default {
         farm_id: this.$route.params.id
       }
     }).then(res => {
-      let resultUrl = 'http://127.0.0.1:8888' + res.data.originFileUrl.substring(1)
-      this.originFileUrl = 'http://127.0.0.1:8888' + res.data.originFileUrl.substring(1)
+      let resultUrl = 'http://124.220.56.38:8888' + res.data.originFileUrl.substring(1)
+      this.originFileUrl = 'http://124.220.56.38:8888' + res.data.originFileUrl.substring(1)
     })
   },
   methods: {
-    handleDescriptiveClose(){
+    handleDescriptiveClose() {
       this.descriptiveVisible = false
     },
-    showDescriptive(){
+    showDescriptive() {
       this.descriptiveVisible = true
       this.$nextTick(() => {
         axios.post('/flask/descriptive_table', {
@@ -358,20 +358,20 @@ export default {
         }).then(res => {
           var resData = res.table
           console.log(resData)
-          resData['zb'] = ["样本量", "最大值", "最小值", "平均值", "标准差", "中位数","方差","峰度","偏度","变异系数(CV)"]
+          resData['zb'] = ["样本量", "最大值", "最小值", "平均值", "标准差", "中位数", "方差", "峰度", "偏度", "变异系数(CV)"]
           console.log(resData)
           var tempTableData = []
-          for(var i=0;i<10;i++) {
+          for (var i = 0; i < 10; i++) {
             tempTableData.push({
-              zb:resData.zb[i],
-              windspeed:resData.WINDSPEED[i],
-              prepower:resData.PREPOWER[i],
-              winddirection:resData.WINDDIRECTION[i],
-              temperature:resData.TEMPERATURE[i],
-              humidity:resData.HUMIDITY[i],
-              pressure:resData.PRESSURE[i],
-              ws:resData.ws[i],
-              power:resData.power[i],
+              zb: resData.zb[i],
+              windspeed: resData.WINDSPEED[i],
+              prepower: resData.PREPOWER[i],
+              winddirection: resData.WINDDIRECTION[i],
+              temperature: resData.TEMPERATURE[i],
+              humidity: resData.HUMIDITY[i],
+              pressure: resData.PRESSURE[i],
+              ws: resData.ws[i],
+              power: resData.power[i],
               yd15: resData.YD15[i]
             })
           }
@@ -383,7 +383,7 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       let url = res.url
-      this.originFileUrl = 'http://127.0.0.1:8888'+res.url.substring(1)
+      this.originFileUrl = 'http://124.220.56.38:8888' + res.url.substring(1)
       console.log(res)
       axios.post('/api/windFarmUrl/updateFarm', {
         farmId: this.$route.params.id,
@@ -407,9 +407,9 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     saveProcessFile() {
-      if(!this.currentProcessUrl){
+      if (!this.currentProcessUrl) {
         this.$message.error('还未进行数据处理，无法下载')
-      }else {
+      } else {
         axios.post('/flask/save_process_file', {
           file_path: this.currentProcessUrl,
           farm_id: this.$route.params.id
@@ -467,6 +467,9 @@ export default {
           path: this.originFileUrl
         }).then(res => {
           chartBoxPlot.setOption(res)
+          window.addEventListener('resize', function () {
+            chartBoxPlot.resize();
+          });
           console.log(res)
         })
       })
@@ -479,6 +482,9 @@ export default {
           path: this.originFileUrl
         }).then(res => {
           chart.setOption(res)
+          window.addEventListener('resize', function () {
+            chart.resize();
+          });
           console.log(res)
         })
       })
@@ -487,9 +493,9 @@ export default {
       this.missInfoVisible = false
     },
     doDataProcess() {
-      if(!this.beforeImpute || !this.detection || !this.afterImpute){
+      if (!this.beforeImpute || !this.detection || !this.afterImpute) {
         this.$message.error('请选择完整填充算法或异常检测算法')
-      }else {
+      } else {
         var chartBeforeImpute = echarts.init(document.getElementById('echart-graph-beforeImpute'), 'dark', {renderer: 'canvas'});
         var chartAfterImpute = echarts.init(document.getElementById('echart-graph-afterImpute'), 'dark', {renderer: 'canvas'});
         const loading = this.$loading({
@@ -533,6 +539,9 @@ export default {
       }).then(res => {
         loading.close()
         chartScatter2D.setOption(res)
+        window.addEventListener('resize', function () {
+          chartScatter2D.resize();
+        });
         console.log(res)
       })
     },
@@ -553,6 +562,9 @@ export default {
         console.log('3d', res)
         loading.close()
         chartScatter3D.setOption(res)
+        window.addEventListener('resize', function () {
+          chartScatter3D.resize();
+        });
         console.log(res)
       })
     }
@@ -564,53 +576,63 @@ export default {
 .right_top_inner {
   margin-top: -8px;
 }
+@media screen and (min-width: 1100px) {
+  .charts{
+    display: flex;
+    flex-direction: row;
+  }
+  .echarts-chart {
+    margin: 5vw;
+    height: 50vh;
+    width: 50vw;
+  }
+}
 
-.echarts-chart {
-  margin-top: 50px;
-  margin-left: 150px;
-  height: 500px;
-  width: 1000px;
+@media screen and (max-width: 1100px) {
+  .charts{
+    display: flex;
+    flex-direction: column;
+  }
+  .echarts-chart {
+    margin: 5vw;
+    height: 50vh;
+    width: 70vw;
+  }
 }
 
 .echarts-chart-missinfo {
-  display: inline-block;
-  height: 400px;
-  width: 700px;
-}
-
-.echarts-chart-descriptive {
-  height: 400px;
-  width: 600px;
+  height: 50vh;
+  width: 45vw;
 }
 
 .echarts-chart-correlation {
-
-  height: 400px;
-  width: 800px;
+  height: 50vh;
+  width: 45vw;
 }
 
 .echarts-chart-boxplot {
-  margin-left: 40px;
-  display: inline-block;
-  height: 400px;
-  width: 1000px;
+  height: 50vh;
+  width: 45vw;
 }
 
 .echarts-chart-scatter2d {
-  height: 400px;
-  width: 700px;
+  height: 50vh;
+  width: 45vw;
 }
 
 .echarts-chart-scatter3d {
-  height: 400px;
-  width: 700px;
+  height: 50vh;
+  width: 45vw;
 }
+
 ::v-deep .el-dialog {
-  background-color: rgb(0,0,0,0.7);
+  background-color: rgb(0, 0, 0, 0.7);
 }
-::v-deep .el-dialog__title{
+
+::v-deep .el-dialog__title {
   color: white !important;
 }
+
 .el-table,
 .el-table__expanded-cell {
   background-color: transparent !important;
@@ -674,7 +696,8 @@ export default {
 ::v-deep .el-table::before {
   // display: none;
 }
-::v-deep .el-table{
+
+::v-deep .el-table {
   color: #FFFFFF;
 }
 

@@ -20,29 +20,29 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="风场风机型号">
+              <el-form-item label="风机型号">
                 <el-input v-model="model" style="width: 70%;"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row :gutter="24">
-            <el-col :span="24">
-              <el-upload
-                  class="upload-demo"
-                  drag
-                  action="/api/file/upload"
-                  multiple
-                  :on-success="handleAvatarSuccess">
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-              </el-upload>
-            </el-col>
-          </el-row>
+            <el-row :gutter="24">
+              <el-col :span="24">
+                <el-upload
+                    class="upload-demo"
+                    drag
+                    action="/api/file/upload"
+                    multiple
+                    :on-success="handleAvatarSuccess">
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                </el-upload>
+              </el-col>
+            </el-row>
         </el-form>
 
       </div>
       <el-col :offset="9">
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+        <el-button type="primary" @click="onSubmit" style="margin-top:3%">立即创建</el-button>
         <el-button type="danger" @click="reset">重置</el-button>
       </el-col>
       <br><br>
@@ -112,6 +112,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+::v-deep .el-upload{
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
+}
+::v-deep .el-upload .el-upload-dragger{
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
 .projname {
   width: 400px;
 }

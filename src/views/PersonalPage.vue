@@ -97,7 +97,7 @@ export default{
   },
   methods: {
     getUserInfo(){
-      this.userData.avatarUrlBack = 'http://127.0.0.1:8888'+this.$ls.get('userInfo').avatar.substring(1)
+      this.userData.avatarUrlBack = 'http://124.220.56.38:8888'+this.$ls.get('userInfo').avatar.substring(1)
       this.userData.avatarUrl = this.$ls.get('userInfo').avatar
       this.userData.username = this.$ls.get('userInfo').account
       this.userData.email = this.$ls.get('userInfo').email
@@ -108,7 +108,7 @@ export default{
     handleAvatarSuccess(res, file) {
       // console.log(res)
       this.userData.avatarUrl = res.url
-      this.userData.avatarUrlBack = 'http://127.0.0.1:8888'+res.url.substring(1)
+      this.userData.avatarUrlBack = 'http://124.220.56.38:8888'+res.url.substring(1)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
