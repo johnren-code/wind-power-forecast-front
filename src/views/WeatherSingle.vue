@@ -40,7 +40,7 @@ export default {
         console.log('res',res)
         axios.post(
             '/flask/weather_pred', {
-              path:'http://124.220.56.38:8888'+res.data.originFileUrl.substring(1)
+              path:'http://127.0.0.1:8888'+res.data.originFileUrl.substring(1)
             }).then(rawData => {
               const weatherIcons = {
                 Showers: '/flask/static/showers_128.png',
@@ -355,7 +355,7 @@ export default {
     })
       axios.post(
           '/flask/weather_pred', {
-            path:'http://124.220.56.38:8888//file/202307/-06fa9f42df1c4db2af5958cdb773a8d4.csv'
+            path:'http://127.0.0.1:8888//file/202307/-06fa9f42df1c4db2af5958cdb773a8d4.csv'
           }).then(rawData => {
             const weatherIcons = {
               Showers: '/flask/static/showers_128.png',

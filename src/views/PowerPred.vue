@@ -528,6 +528,7 @@ export default {
       ) {
         this.$message.error("请选择完整的预测所需要的信息");
       } else {
+        console.log('起始时间',this.concatenateDateTime())
         axios
           .post("/flask/pred_static", {
             file: this.processUrl,
